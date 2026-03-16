@@ -4,7 +4,7 @@
   "functions": {
     "api/query.js": {
       "maxDuration": 60,
-      "includeFiles": ["index/node_index.json"]
+      "includeFiles": "index/node_index.json"
     }
   },
   "headers": [
