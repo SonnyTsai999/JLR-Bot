@@ -1,0 +1,19 @@
+{
+  "name": "jlr-technology-intelligence",
+  "version": "1.0.0",
+  "description": "JLR Technology Intelligence Assistant — RAG-based decision support for AEC design technologies",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "build": "echo 'No build step'",
+    "start": "node server.js",
+    "export-index": "python scripts/export_index_for_node.py"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "openai": "^4.52.0"
+  }
+}

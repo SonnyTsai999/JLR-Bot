@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JLR Technology Intelligence Assistant</title>
+  <style>
+    :root {
+      --bg: #060b16;
+      --surface: rgba(15, 25, 43, 0.75);
+      --surface-alt: rgba(10, 18, 33, 0.82);
+      --border: rgba(107, 132, 173, 0.28);
+      --text: #eef4ff;
+      --muted: #9eb1cc;
+      --accent: #5ea0ff;
+      --accent-hover: #3e86f6;
+      --radius: 14px;
+      --shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(1000px 500px at 0% -10%, rgba(67, 124, 255, 0.25), transparent 55%),
+        radial-gradient(900px 450px at 100% -15%, rgba(77, 180, 255, 0.18), transparent 60%),
+        linear-gradient(160deg, #070d1a 0%, #040913 100%);
+      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2.6rem 1.25rem 2rem;
+    }
+
+    .hero {
+      margin-bottom: 1.15rem;
+      padding: 1.2rem 1.35rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(165deg, rgba(20, 34, 58, 0.55), rgba(11, 20, 38, 0.45));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #b9d5ff;
+      background: rgba(94, 160, 255, 0.14);
+      border: 1px solid rgba(120, 176, 255, 0.3);
+      border-radius: 999px;
+      padding: 0.2rem 0.55rem;
+      margin-bottom: 0.6rem;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.96rem;
+      margin: 0.45rem 0 0;
+      max-width: 760px;
+    }
+
+    #backend-status {
+      margin-top: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.86rem;
+      color: #b8c8df;
+      background: rgba(15, 27, 47, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.22rem 0.7rem;
+      width: fit-content;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.3rem 1.4rem;
+      margin-bottom: 1.1rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    label {
+      display: block;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #aec2df;
+      margin-bottom: 0.52rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 108px;
+      padding: 0.95rem 1rem;
+      background: rgba(5, 12, 24, 0.86);
+      border: 1px solid rgba(113, 146, 195, 0.33);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.97rem;
+      resize: vertical;
+      line-height: 1.55;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea::placeholder { color: #7e96ba; opacity: 0.9; }
+
+    textarea:focus {
+      outline: none;
+      border-color: #6daeff;
+      box-shadow: 0 0 0 3px rgba(78, 145, 255, 0.18);
+    }
+
+    button {
+      margin-top: 0.9rem;
+      padding: 0.64rem 1.28rem;
+      background: linear-gradient(135deg, #5da0ff 0%, #3b82f6 60%, #2d71e6 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.4);
+    }
+
+    button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    #output { display: none; }
+    #output.visible { display: block; }
+
+    .response-section {
+      background: var(--surface-alt);
+      border: 1px solid rgba(112, 138, 180, 0.24);
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem;
+      margin-bottom: 0;
+    }
+
+    .response-section .section-title {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    #result {
+      font-size: 0.95rem;
+      line-height: 1.72;
+    }
+
+    #result h2 {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: #8ec0ff;
+      margin: 1.2rem 0 0.5rem 0;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px dashed rgba(126, 166, 223, 0.34);
+    }
+
+    #result h2:first-child { margin-top: 0; }
+    #result p { margin: 0.5rem 0; }
+    #result ul { margin: 0.4rem 0; padding-left: 1.35rem; }
+    #result li { margin: 0.25rem 0; }
+    #result strong { color: #ffffff; font-weight: 700; }
+    #result a { color: #89beff; text-decoration: none; }
+    #result a:hover { text-decoration: underline; }
+    .error { color: #ff8f8f; }
+
+    .sources-section {
+      margin-top: 1.25rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid rgba(116, 146, 191, 0.3);
+    }
+
+    .sources-section h3 {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aac0df;
+      margin: 0 0 0.6rem 0;
+    }
+
+    .sources-section ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: #b7c8e0;
+      font-size: 0.88rem;
+      line-height: 1.58;
+    }
+
+    .sources-section li { margin: 0.35rem 0; }
+    .sources-section li a { color: #93c5ff; text-decoration: none; }
+    .sources-section li a:hover { text-decoration: underline; }
+
+    @media (max-width: 680px) {
+      .container { padding-top: 1.6rem; }
+      .hero { padding: 1rem; }
+      .card { padding: 1rem; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="hero-tag">AI Strategy Assistant</div>
+      <h1>JLR Technology Intelligence Assistant</h1>
+      <p class="subtitle">Evidence-grounded insights for emerging AEC design technologies. Ask a question; responses use only retrieved corpus evidence and include APA references.</p>
+      <p id="backend-status">Checking backend…</p>
+    </div>
+
+    <div class="card">
+      <label for="query">Your question</label>
+      <textarea id="query" placeholder="e.g. What are adoption barriers for digital twins in AEC?"></textarea>
+      <button id="submit" type="button">Get analysis</button>
+    </div>
+
+    <div id="output" class="card">
+      <label class="section-title">Response</label>
+      <div class="response-section">
+        <div id="result"></div>
+      </div>
+      <div class="sources-section" id="sources"></div>
+    </div>
+  </div>
+
+  <script>
+    // Same origin: use /api (Node/Vercel). File or other port: use API_BASE (e.g. Node dev on 3000).
+    const API_BASE = (function () {
+      if (typeof window === 'undefined') return '';
+      if (window.location.protocol === 'file:') return 'http://localhost:3000';
+      const port = window.location.port || '';
+      if (port === '5500' || port === '3000') return 'http://localhost:3000';
+      return '';
+    })();
+    const API_PREFIX = API_BASE || '';
+
+    function escapeHtml(s) {
+      if (s == null) return '';
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    function extractCitedDois(responseText) {
+      if (!responseText) return new Set();
+      const refMatch = responseText.match(/##\s*APA\s+References?\s*([\s\S]*?)(?=##|$)/i);
+      const section = refMatch ? refMatch[1] : responseText;
+      const dois = new Set();
+      const doiRegex = /(?:https?:\/\/doi\.org\/|doi\.org\/)([^\s\]\)<>"']+)/gi;
+      let m;
+      while ((m = doiRegex.exec(section)) !== null) {
+        dois.add(m[1].replace(/\.$/, '').toLowerCase());
+      }
+      const bareDoi = /\b10\.\d{4,}\/[^\s\]\)]+/g;
+      while ((m = bareDoi.exec(section)) !== null) {
+        dois.add(m[0].toLowerCase());
+      }
+      return dois;
+    }
+
+    function responseToHtml(text) {
+      if (!text) return '';
+      let s = escapeHtml(text);
+      s = s.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+      s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/\[([^\]]+)\]\((https?:\S+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      s = s.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+      s = s.replace(/\n\n/g, '</p><p>');
+      s = s.replace(/\n/g, '<br>');
+      return '<p>' + s + '</p>';
+    }
+
+    function filterCitedSources(sourcesUsed, responseText) {
+      const citedDois = extractCitedDois(responseText);
+      if (citedDois.size === 0) return sourcesUsed;
+      return sourcesUsed.filter(s => {
+        const doi = (s.doi || '').trim().toLowerCase().replace(/^https?:\/\/doi\.org\//, '');
+        if (!doi) return true;
+        return citedDois.has(doi) || Array.from(citedDois).some(d => d.includes(doi) || doi.includes(d));
+      });
+    }
+
+    document.getElementById('submit').addEventListener('click', async () => {
+      const queryEl = document.getElementById('query');
+      const resultEl = document.getElementById('result');
+      const sourcesEl = document.getElementById('sources');
+      const outputEl = document.getElementById('output');
+      const btn = document.getElementById('submit');
+      if (!resultEl || !outputEl) {
+        alert('Page layout error: output elements not found.');
+        return;
+      }
+
+      const questionText = (queryEl && queryEl.value) ? queryEl.value.trim() : '';
+      if (!questionText) {
+        resultEl.innerHTML = '<span class="error">Please enter a question.</span>';
+        outputEl.classList.add('visible');
+        outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        return;
+      }
+
+      btn.disabled = true;
+      resultEl.innerHTML = 'Loading…';
+      if (sourcesEl) sourcesEl.innerHTML = '';
+      outputEl.classList.add('visible');
+      outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      try {
+        const url = API_PREFIX + '/api/query';
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 120000);
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: questionText }),
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        let data;
+        try {
+          data = await res.json();
+        } catch (e) {
+          resultEl.innerHTML = '<span class="error">Invalid response from server (not JSON). Status: ' + res.status + '. Open DevTools (F12) → Network to inspect.</span>';
+          return;
+        }
+
+        if (!res.ok) {
+          const msg = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail || data);
+          resultEl.innerHTML = '<span class="error">' + escapeHtml(msg || res.statusText) + '</span>';
+          return;
+        }
+
+        const responseText = typeof data.response === 'string' ? data.response : (data.response && data.response.message) || (data.response ? JSON.stringify(data.response) : '');
+        try {
+          resultEl.innerHTML = responseToHtml(responseText || '(No response from model.)');
+        } catch (e) {
+          resultEl.textContent = responseText || '(No response from model.)';
+        }
+
+        const allSources = data.sources_used || [];
+        let displaySources = allSources;
+        try {
+          const citedOnly = filterCitedSources(allSources, responseText);
+          displaySources = citedOnly.length > 0 ? citedOnly : allSources;
+        } catch (e) { /* keep all sources if filter fails */ }
+
+        if (displaySources.length > 0 && sourcesEl) {
+          sourcesEl.innerHTML = '<h3>Sources cited in this response</h3><ul>' +
+            displaySources.map(s => {
+              const citation = (s.apa_citation || s.title || '') + (s.authors ? '; ' + s.authors : '') + (s.year ? ', ' + s.year : '');
+              const doi = (s.doi || '').trim();
+              const linkUrl = doi && !doi.startsWith('http') ? 'https://doi.org/' + doi : doi;
+              const display = escapeHtml(citation.trim() || s.source || 'Source');
+              return '<li>' + (linkUrl ? '<a href="' + escapeHtml(linkUrl) + '">' + display + '</a>' : display) + '</li>';
+            }).join('') +
+            '</ul>';
+        }
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          resultEl.innerHTML = '<span class="error">Request timed out. Ensure the server is running (npm run dev).</span>';
+        } else {
+          resultEl.innerHTML = '<span class="error">' + escapeHtml(err.message || String(err)) + '</span>';
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+
+    (function () {
+      const el = document.getElementById('backend-status');
+      if (!el) return;
+      const healthUrl = API_PREFIX + '/api/health';
+      fetch(healthUrl, { method: 'GET' })
+        .then(function (r) { return r.ok ? 'Backend connected.' : Promise.reject(new Error(r.status)); })
+        .then(function (msg) { el.textContent = msg; el.style.color = 'var(--muted)'; })
+        .catch(function () { el.innerHTML = 'Backend not reachable. Run <code>npm run dev</code> or deploy to Vercel.'; el.style.color = '#f87171'; });
+    })();
+  </script>
+</body>
+</html>
