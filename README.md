@@ -12,6 +12,12 @@ RAG-based **Technology Intelligence Assistant** for J.L. Richards (JLR): turns a
 
 See [SYSTEM_INTENT.md](SYSTEM_INTENT.md) for full development intent and constraints.
 
+### Public repository checklist
+
+- **Never commit** `config/settings.yaml` (it can contain your API key and base URL). Use `config/settings.example.yaml` as a template.
+- **No secrets in code** — the app reads `OPENAI_API_KEY` (and optional `OPENAI_BASE_URL`) from the environment; set these in Vercel or locally.
+- **Index content** — `index/node_index.json` contains embeddings and chunk text derived from your corpus; if the repo is public, this content is visible. Use a private repo or host the index elsewhere (e.g. `INDEX_URL`) if the corpus is confidential.
+
 ## Setup
 
 1. **Clone and install**
@@ -34,7 +40,7 @@ See [SYSTEM_INTENT.md](SYSTEM_INTENT.md) for full development intent and constra
 
 4. **Config**
 
-   Edit `config/settings.yaml` for paths, chunk sizes, model names, top_k, etc.
+   Copy `config/settings.example.yaml` to `config/settings.yaml` and set your API key and paths. Do not commit `settings.yaml` (it is in `.gitignore`).
 
 ## Usage
 

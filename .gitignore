@@ -1,6 +1,8 @@
 # Dependencies and env
 .venv/
 node_modules/
+__pycache__/
+*.pyc
 
 # Data and large binaries (node_index.json is tracked for Vercel)
 data/
