@@ -3,7 +3,8 @@
   "framework": null,
   "functions": {
     "api/query.js": {
-      "maxDuration": 60
+      "maxDuration": 60,
+      "includeFiles": ["index/node_index.json"]
     }
   },
   "headers": [
