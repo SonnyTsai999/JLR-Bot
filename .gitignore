@@ -1,0 +1,17 @@
+# Dependencies and env
+.venv/
+node_modules/
+
+# Data and large binaries (node_index.json is tracked for Vercel)
+data/
+index/faiss.index
+index/metadata.jsonl
+
+# Secrets (set OPENAI_API_KEY in Vercel env vars)
+config/settings.yaml
+
+# IDE / OS
+.cursor
+.idea
+*.log
+.DS_Store
