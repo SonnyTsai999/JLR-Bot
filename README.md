@@ -108,6 +108,12 @@ Open http://localhost:3000. The app serves `public/index.html` and exposes `POST
 3. If the index is in the repo: ensure `index/node_index.json` is committed (or under 50MB). If it’s too large, upload to Vercel Blob (or another URL) and set `INDEX_URL` to that URL.
 4. Deploy. The frontend is served from `public/`; API routes live under `/api/query` and `/api/health`.
 
+**If you see "No index available" on Vercel:** Set `INDEX_URL` so the app loads the index from a URL instead of the filesystem. With the index in this repo, use the GitHub raw URL (replace `main` with your branch if different):
+
+- `INDEX_URL` = `https://raw.githubusercontent.com/SonnyTsai999/JLR-Bot/main/index/node_index.json`
+
+Then redeploy (Deployments → ⋮ → Redeploy).
+
 ### Config (Node / Vercel)
 
 All config is via environment variables (no YAML in Node):
