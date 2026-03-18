@@ -5,466 +5,233 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JLR Technology Intelligence Assistant</title>
   <style>
-    /* Sleek Light Theme */
+    /* Light theme (default) */
     :root {
-      --bg: #f8fafc;
-      --surface: rgba(255, 255, 255, 0.7);
-      --surface-alt: rgba(255, 255, 255, 0.5);
-      --border: rgba(226, 232, 240, 0.8);
-      --text: #0f172a;
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e2e8f0;
+      --text: #1e293b;
       --muted: #64748b;
-      --accent: #3b82f6;
-      --accent-hover: #2563eb;
-      --accent-glow: rgba(59, 130, 246, 0.4);
-      --radius: 20px;
-      --shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
-      --glass-blur: blur(16px);
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --radius: 14px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
 
     * { box-sizing: border-box; }
 
     body {
-      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-      background-color: #f1f5f9;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(160deg, #f0f4f8 0%, #e2e8f0 100%);
       color: var(--text);
       margin: 0;
       min-height: 100vh;
       line-height: 1.65;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Animated background gradient blobs */
-    body::before, body::after {
-      content: "";
-      position: fixed;
-      width: 60vw;
-      height: 60vw;
-      border-radius: 50%;
-      z-index: -1;
-      filter: blur(100px);
-      opacity: 0.5;
-      animation: drift 20s infinite alternate ease-in-out;
-    }
-    body::before {
-      background: radial-gradient(circle, #bfdbfe 0%, transparent 70%);
-      top: -10%; left: -10%;
-    }
-    body::after {
-      background: radial-gradient(circle, #ddd6fe 0%, transparent 70%);
-      bottom: -10%; right: -10%;
-      animation-delay: -10s;
-    }
-
-    @keyframes drift {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(10vw, 10vh) scale(1.1); }
     }
 
     .container {
-      max-width: 960px;
+      max-width: 920px;
       margin: 0 auto;
-      padding: 3rem 1.25rem 2rem;
-      position: relative;
-      z-index: 1;
+      padding: 2.6rem 1.25rem 2rem;
     }
 
     .hero {
-      margin-bottom: 1.5rem;
-      padding: 2rem;
+      margin-bottom: 1.15rem;
+      padding: 1.2rem 1.35rem;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--surface);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
       box-shadow: var(--shadow);
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .hero:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 50px -10px rgba(0,0,0,0.1);
     }
 
     .hero-tag {
       display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--accent);
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid rgba(59, 130, 246, 0.2);
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
       border-radius: 999px;
-      padding: 0.3rem 0.8rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 10px var(--accent-glow);
+      padding: 0.2rem 0.55rem;
+      margin-bottom: 0.6rem;
     }
 
     h1 {
-      font-size: clamp(2rem, 4vw, 2.75rem);
-      font-weight: 800;
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      font-weight: 700;
       margin: 0;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.02em;
       color: var(--text);
-      background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     .subtitle {
       color: var(--muted);
-      font-size: 1.05rem;
-      margin: 0.75rem auto 0;
-      max-width: 700px;
+      font-size: 0.96rem;
+      margin: 0.45rem 0 0;
+      max-width: 760px;
     }
 
     #backend-status {
-      margin-top: 1.2rem;
+      margin-top: 0.85rem;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 500;
+      gap: 0.45rem;
+      font-size: 0.86rem;
       color: var(--muted);
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(4px);
+      background: var(--surface-alt);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 0.3rem 0.8rem;
+      padding: 0.22rem 0.7rem;
+      width: fit-content;
     }
 
     .card {
       background: var(--surface);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.75rem;
-      margin-bottom: 1.5rem;
+      padding: 1.3rem 1.4rem;
+      margin-bottom: 1.1rem;
       box-shadow: var(--shadow);
     }
 
     label {
       display: block;
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-size: 0.74rem;
+      font-weight: 600;
       color: var(--muted);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.52rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
     }
 
     textarea {
       width: 100%;
-      min-height: 120px;
-      padding: 1.2rem;
-      background: rgba(255, 255, 255, 0.8);
-      border: 2px solid var(--border);
-      border-radius: 14px;
+      min-height: 108px;
+      padding: 0.95rem 1rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
       color: var(--text);
-      font-size: 1.05rem;
-      font-family: inherit;
+      font-size: 0.97rem;
       resize: vertical;
-      line-height: 1.6;
-      transition: all 0.3s ease;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      line-height: 1.55;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    textarea::placeholder { color: #94a3b8; }
+    textarea::placeholder { color: #94a3b8; opacity: 0.9; }
 
     textarea:focus {
       outline: none;
       border-color: var(--accent);
-      background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), inset 0 2px 4px rgba(0,0,0,0.01);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
     button {
-      margin-top: 1.25rem;
-      padding: 0.8rem 1.75rem;
+      margin-top: 0.9rem;
+      padding: 0.64rem 1.28rem;
       background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       color: #fff;
       border: none;
-      border-radius: 12px;
-      font-size: 1rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
       font-weight: 600;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       cursor: pointer;
-      box-shadow: 0 4px 15px var(--accent-glow);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    button::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 50%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transform: skewX(-20deg);
-      transition: all 0.5s ease;
-    }
-    button:hover::after {
-      left: 150%;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     }
 
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px var(--accent-glow);
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
     }
 
-    button:active {
-      transform: translateY(1px);
-    }
+    button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
-    button:disabled { 
-      opacity: 0.6; 
-      cursor: not-allowed; 
-      transform: none; 
-      box-shadow: none;
-    }
-
-    .mode-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      margin-top: 1.25rem;
-      padding: 1.2rem;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 14px;
-      border: 1px solid rgba(226, 232, 240, 0.8);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
-    }
-    
-    .mode-controls {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-    }
-    
-    .mode-label {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin: 0;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      text-transform: none;
-      letter-spacing: 0;
-      cursor: pointer;
-    }
-
-    .mode-label input[type="checkbox"] {
-      width: 1.25rem;
-      height: 1.25rem;
-      accent-color: var(--accent);
-      cursor: pointer;
-      margin: 0;
-    }
-    
-    .report-type-select {
-      padding: 0.4rem 0.75rem;
-      border-radius: 8px;
-      border: 1px solid rgba(203, 213, 225, 0.8);
-      background: #ffffff;
-      color: var(--text);
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.2s ease;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-    }
-    .report-type-select:hover:not(:disabled) {
-      border-color: var(--accent);
-    }
-    .report-type-select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-    }
-    .report-type-select:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background: transparent;
-      border-color: transparent;
-      box-shadow: none;
-      padding-left: 0;
-    }
-
-    .mode-hint {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin: 0;
-      opacity: 0.85;
-      line-height: 1.4;
-      flex-basis: 100%;
-      margin-top: 0.1rem;
-      padding-left: 2rem;
-    }
-
-    #output { display: none; animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+    #output { display: none; }
     #output.visible { display: block; }
-    
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
 
     .response-section {
       background: var(--surface-alt);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.5rem;
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem;
       margin-bottom: 0;
     }
 
     .response-section .section-title {
-      font-size: 0.75rem;
-      font-weight: 800;
+      font-size: 0.74rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       color: var(--accent);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
     }
 
     #result {
-      font-size: 1rem;
-      line-height: 1.75;
-      color: #334155;
+      font-size: 0.95rem;
+      line-height: 1.72;
+      color: var(--text);
     }
 
     #result h2 {
-      font-size: 1.15rem;
+      font-size: 1.02rem;
       font-weight: 700;
-      color: var(--text);
-      margin: 1.5rem 0 0.75rem 0;
-      padding-bottom: 0.4rem;
-      border-bottom: 2px solid rgba(226, 232, 240, 0.6);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    #result h2::before {
-      content: '';
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      background: var(--accent);
-      border-radius: 3px;
-      transform: rotate(45deg);
+      color: var(--accent);
+      margin: 1.2rem 0 0.5rem 0;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px dashed var(--border);
     }
 
     #result h2:first-child { margin-top: 0; }
-    #result p { margin: 0.75rem 0; }
-    #result ul { margin: 0.5rem 0; padding-left: 1.5rem; }
-    #result li { margin: 0.4rem 0; }
-    #result li::marker { color: var(--accent); }
+    #result p { margin: 0.5rem 0; }
+    #result ul { margin: 0.4rem 0; padding-left: 1.35rem; }
+    #result li { margin: 0.25rem 0; }
     #result strong { color: var(--text); font-weight: 700; }
-    #result a { 
-      color: var(--accent); 
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.2s;
-    }
-    #result a:hover { border-color: var(--accent); }
-    .error { color: #ef4444; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
-    .error::before { content: '⚠️'; }
+    #result a { color: var(--accent); text-decoration: none; }
+    #result a:hover { text-decoration: underline; }
+    .error { color: #dc2626; }
 
     .sources-section {
-      margin-top: 1.5rem;
-      padding-top: 1.25rem;
+      margin-top: 1.25rem;
+      padding-top: 1.15rem;
       border-top: 1px solid var(--border);
     }
 
     .sources-section h3 {
-      font-size: 0.8rem;
+      font-size: 0.74rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       color: var(--muted);
-      margin: 0 0 0.75rem 0;
+      margin: 0 0 0.6rem 0;
     }
     .sources-section .sources-note {
       font-size: 0.85rem;
       color: var(--muted);
-      margin: 0 0 0.75rem 0;
-      font-style: italic;
+      margin: 0 0 0.5rem 0;
     }
 
     .sources-section ul {
       margin: 0;
-      padding-left: 0;
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      padding-left: 1.2rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.58;
     }
 
-    .sources-section li { 
-      font-size: 0.9rem;
-      line-height: 1.5;
-      padding: 0.75rem 1rem;
-      background: rgba(255, 255, 255, 0.4);
-      border: 1px solid rgba(226, 232, 240, 0.6);
-      border-radius: 10px;
-      transition: all 0.2s;
-    }
-    .sources-section li:hover {
-      background: rgba(255, 255, 255, 0.8);
-      border-color: rgba(148, 163, 184, 0.4);
-      transform: translateX(4px);
-    }
-    .sources-section li a { color: var(--text); text-decoration: none; font-weight: 500; }
-    .sources-section li a:hover { color: var(--accent); }
-
-    .agent-status {
-      display: none;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.8rem 1.25rem;
-      margin-bottom: 1.25rem;
-      background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
-      border: 1px solid #bfdbfe;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--accent-hover);
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
-      
-      /* Make sure it's positioned properly and not overlapping */
-      position: relative;
-      z-index: 2;
-    }
-    .agent-status.visible { display: flex; animation: pulseFade 2s infinite ease-in-out; }
-    
-    @keyframes pulseFade {
-      0%, 100% { box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1); opacity: 1; }
-      50% { box-shadow: 0 4px 25px rgba(59, 130, 246, 0.3); opacity: 0.8; }
-    }
-    
-    .agent-status .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
-      animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+    .sources-section li { margin: 0.35rem 0; }
+    .sources-section li a { color: var(--accent); text-decoration: none; }
+    .sources-section li a:hover { text-decoration: underline; }
 
     @media (max-width: 680px) {
-      .container { padding-top: 1.5rem; }
-      .hero { padding: 1.5rem 1rem; }
-      h1 { font-size: 1.75rem; }
-      .card { padding: 1.25rem; }
+      .container { padding-top: 1.6rem; }
+      .hero { padding: 1rem; }
+      .card { padding: 1rem; }
       button { width: 100%; }
-      .mode-row { flex-direction: column; align-items: flex-start; }
     }
     .loading-state {
       display: inline-block;
@@ -490,6 +257,7 @@
     <div class="card">
       <label for="query">Your question</label>
       <textarea id="query" placeholder="e.g. What are adoption barriers for digital twins in AEC?"></textarea>
+      
       <div class="mode-row">
         <div class="mode-controls">
           <label for="deep-research" class="mode-label">
@@ -514,6 +282,7 @@
         
         <span class="mode-hint">Multi-agent pipeline. The AI will automatically choose between Standard and Roadmap based on your question.</span>
       </div>
+      
       <button id="submit" type="button">Get analysis</button>
     </div>
 
@@ -531,15 +300,15 @@
   </div>
 
   <script>
-    // Same origin: use /api (Node/Vercel). File or other port: use API_BASE (e.g. Node dev on 3000).
+    // Use full API URL when not on the backend port (e.g. file://, or port 5500/3000)
     const API_BASE = (function () {
       if (typeof window === 'undefined') return '';
-      if (window.location.protocol === 'file:') return 'http://localhost:3000';
       const port = window.location.port || '';
-      if (port === '5500' || port === '3000') return 'http://localhost:3000';
-      return '';
+      const isBackend = window.location.hostname === 'localhost' && port === '8000';
+      if (isBackend) return '';
+      if (window.location.protocol === 'file:' || port === '5500' || port === '3000') return 'http://localhost:8000';
+      return 'http://' + window.location.hostname + ':8000';
     })();
-    const API_PREFIX = API_BASE || '';
 
     function escapeHtml(s) {
       if (s == null) return '';
@@ -628,30 +397,30 @@
       const reportType = deepResearch && reportTypeSelect ? reportTypeSelect.value : 'auto';
       const modelSelect = document.getElementById('model-select');
       const selectedModel = modelSelect ? modelSelect.value : 'gpt-4o';
-      
-      const url = API_PREFIX + (deepResearch ? '/api/deep-research' : '/api/query');
-      const timeoutMs = deepResearch ? 300000 : 120000;
-      const statusEl = document.getElementById('agent-status');
-      const statusTextEl = document.getElementById('agent-status-text');
-
-      function showStatus(text) {
-        if (statusEl && statusTextEl) {
-          statusTextEl.textContent = text;
-          statusEl.classList.add('visible');
-        }
-      }
-      function hideStatus() {
-        if (statusEl) statusEl.classList.remove('visible');
-      }
 
       btn.disabled = true;
       resultEl.innerHTML = deepResearch ? '<span class="loading-state">Deep thinking in progress...</span>' : 'Loading…';
       if (sourcesEl) sourcesEl.innerHTML = '';
       outputEl.classList.add('visible');
       outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      if (deepResearch) showStatus('Starting…');
 
       try {
+        const url = API_BASE + (deepResearch ? '/api/deep-research' : '/query');
+        const timeoutMs = deepResearch ? 300000 : 120000;
+        const statusEl = document.getElementById('agent-status');
+        const statusTextEl = document.getElementById('agent-status-text');
+
+        function showStatus(text) {
+          if (statusEl && statusTextEl) {
+            statusTextEl.textContent = text;
+            statusEl.classList.add('visible');
+          }
+        }
+        function hideStatus() {
+          if (statusEl) statusEl.classList.remove('visible');
+        }
+
+        if (deepResearch) showStatus('Starting…');
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -714,11 +483,13 @@
             }
             return;
           }
+
           if (!res.ok) {
             const msg = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail || data);
             resultEl.innerHTML = '<span class="error">' + escapeHtml(msg || res.statusText) + '</span>';
             return;
           }
+
           var responseText = typeof data.response === 'string' ? data.response : (data.response && data.response.message) || (data.response ? JSON.stringify(data.response) : '');
           var allSources = data.sources_used || [];
         }
@@ -729,6 +500,7 @@
           resultEl.textContent = responseText || '(No response from model.)';
         }
 
+        const allSources = data.sources_used || [];
         let displaySources = allSources;
         try {
           const citedOnly = filterCitedSources(allSources, responseText);
@@ -751,9 +523,8 @@
             '</ul>';
         }
       } catch (err) {
-        hideStatus();
         if (err.name === 'AbortError') {
-          resultEl.innerHTML = '<span class="error">Request timed out. Ensure the server is running (npm run dev).</span>';
+          resultEl.innerHTML = '<span class="error">Request timed out. Start the backend with: python -m uvicorn backend.server:app --host 0.0.0.0 --port 8000</span>';
         } else {
           resultEl.innerHTML = '<span class="error">' + escapeHtml(err.message || String(err)) + '</span>';
         }
@@ -762,14 +533,15 @@
       }
     });
 
+    // Show whether backend is reachable (so user knows before clicking)
     (function () {
       const el = document.getElementById('backend-status');
       if (!el) return;
-      const healthUrl = API_PREFIX + '/api/health';
-      fetch(healthUrl, { method: 'GET' })
+      const base = (window.location.port === '8000' && window.location.hostname === 'localhost') ? '' : (API_BASE || 'http://localhost:8000');
+      fetch((base || '') + '/health', { method: 'GET' })
         .then(function (r) { return r.ok ? 'Backend connected.' : Promise.reject(new Error(r.status)); })
         .then(function (msg) { el.textContent = msg; el.style.color = 'var(--muted)'; })
-        .catch(function () { el.innerHTML = 'Backend not reachable. Run <code>npm run dev</code> or deploy to Vercel.'; el.style.color = '#f87171'; });
+        .catch(function () { el.innerHTML = 'Backend not reachable. Start it with: <code>python -m uvicorn backend.server:app --host 0.0.0.0 --port 8000</code>'; el.style.color = '#f87171'; });
     })();
   </script>
 </body>
