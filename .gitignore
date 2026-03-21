@@ -9,8 +9,8 @@ __pycache__/
 data/raw_pdfs/*.pdf
 data/raw_pdfs/**/*.pdf
 data/processed_chunks/
-index/faiss.index
-index/metadata.jsonl
+# faiss.index + metadata.jsonl are tracked for Python RAG (each under 100MB GitHub limit).
+# Large (~100MB+); GitHub max 100MB per file. Use Git LFS, or REDDIT_INDEX_URL on Vercel.
 index/reddit_index.json
 
 # Secrets (set OPENAI_API_KEY in Vercel env vars)
