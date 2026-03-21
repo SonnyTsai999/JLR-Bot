@@ -45,7 +45,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ detail: 'Method not allowed' });
 
   let body = req.body || {};
-  const { tech_tag, comment_count } = body;
+  const { tech_tag, comment_count, model_selection } = body;
   
   if (!tech_tag) {
     return res.status(400).json({ detail: 'tech_tag is required' });
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
   try {
     const config = getConfig();
     const llmConfig = config.llm || {};
-    const model = llmConfig.model || 'GPT5-nano';
+    const model = model_selection || llmConfig.model || 'gpt-5-nano';
     const embModel = config.embedding?.model || 'text-embedding-3-small';
     
     const client = new OpenAI({
@@ -115,7 +115,8 @@ Return ONLY valid JSON in this exact structure:
     {
       "body": "original text quote",
       "insight": "1-sentence explanation of why this barrier, opportunity, or use-case is relevant to the AEC industry",
-      "score": "upvote score if available"
+      "score": "upvote score if available",
+      "permalink": "exact permalink provided in the input for this quote"
     }
   ]
 }
@@ -127,6 +128,7 @@ Note for screened_comments: Return exactly ${numComments} MOST informative and i
       subreddit: c.subreddit,
       text: c.text,
       score: c.score,
+      permalink: "https://reddit.com/r/" + c.subreddit + "/comments/" + c.post_id + "/",
       relevance_score: c.sim.toFixed(3)
     })), null, 2);
 

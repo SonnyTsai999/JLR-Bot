@@ -164,6 +164,13 @@
           <option value="5" selected>5 Comments</option>
           <option value="10">10 Comments</option>
         </select>
+        <select id="modelSelect">
+          <option value="gpt-4o">GPT-4o</option>
+          <option value="gpt-4o-mini">gpt-4o-mini</option>
+          <option value="gpt-5">GPT-5</option>
+          <option value="gpt-5-mini">GPT5-mini</option>
+          <option value="gpt-5-nano" selected>GPT5-nano</option>
+        </select>
         <button id="extractBtn" onclick="runExtraction()">Extract Insights</button>
       </div>
       <div id="loading-state">
@@ -231,6 +238,7 @@
     async function runExtraction() {
       const tech = document.getElementById('techSelect').value;
       const commentCount = document.getElementById('commentCountSelect').value;
+      const modelSelection = document.getElementById('modelSelect').value;
       if (!tech) {
         alert('Please select a technology first.');
         return;
@@ -252,7 +260,7 @@
         const response = await fetch('/api/reddit-insights', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tech_tag: tech, comment_count: commentCount })
+          body: JSON.stringify({ tech_tag: tech, comment_count: commentCount, model_selection: modelSelection })
         });
         
         if (!response.ok) {
@@ -273,7 +281,10 @@
               <div class="comment-card">
                 <div class="comment-insight">Insight: ${escapeHtml(c.insight)}</div>
                 <div class="comment-quote">"${escapeHtml(c.body)}"</div>
-                ${c.score ? `<div style="font-size:0.8rem; color:var(--muted); margin-top:0.5rem;">Upvotes: ${c.score}</div>` : ''}
+                <div style="font-size:0.8rem; color:var(--muted); margin-top:0.5rem; display:flex; justify-content:space-between;">
+                  <span>${c.score ? `Upvotes: ${c.score}` : ''}</span>
+                  ${c.permalink ? `<a href="${c.permalink}" target="_blank" style="color:var(--accent); text-decoration:none;">View on Reddit &rarr;</a>` : ''}
+                </div>
               </div>
             `;
           });
