@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reddit AI Insights Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.2.2/wordcloud2.min.js"></script>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --positive: #10b981;
+      --neutral: #94a3b8;
+      --negative: #ef4444;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    body {
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--text);
+    }
+    .back-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+    
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    select, button {
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    
+    button {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    
+    button:hover {
+      background-color: var(--accent-hover);
+    }
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    
+    #loading-state {
+      display: none;
+      color: var(--accent);
+      font-weight: 500;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      align-items: center;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    #results-area {
+      display: none;
+    }
+
+    .markdown-content h2 { margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.25rem; }
+    .markdown-content h3 { margin-top: 1.25rem; margin-bottom: 0.5rem; font-size: 1.1rem; }
+    .markdown-content p { margin-bottom: 1rem; }
+    .markdown-content ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+    .markdown-content li { margin-bottom: 0.25rem; }
+    
+    .comment-card {
+      background: var(--surface-alt);
+      border-left: 4px solid var(--accent);
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    .comment-insight {
+      color: var(--accent-hover);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .comment-quote {
+      font-style: italic;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Reddit AI Insights (RAG)</h1>
+    <a href="/" class="back-link">&larr; Back to App</a>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2 style="margin-top:0;">Extract Adoption Barriers & Opportunities</h2>
+      <p style="color:var(--muted); font-size:0.95rem; margin-bottom:1.5rem;">
+        Select a technology to dynamically search the raw Reddit corpus and use AI to extract core barriers, challenges, and practical use-cases directly from the discussions.
+      </p>
+      
+      <div class="controls">
+        <select id="techSelect">
+          <option value="">Loading technologies...</option>
+        </select>
+        <select id="commentCountSelect">
+          <option value="3">3 Comments</option>
+          <option value="5" selected>5 Comments</option>
+          <option value="10">10 Comments</option>
+        </select>
+        <button id="extractBtn" onclick="runExtraction()">Extract Insights</button>
+      </div>
+      <div id="loading-state">
+        <svg style="vertical-align: middle; margin-right: 0.5rem; animation: spin 1s linear infinite;" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+        Analyzing raw posts and generating insights...
+      </div>
+    </div>
+
+    <div id="results-area">
+      <div class="card" style="margin-bottom: 1.5rem; border-left: 4px solid var(--negative);">
+        <h2 style="margin-top:0; color:var(--negative); display:flex; align-items:center; gap:0.5rem;">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+          Adoption Barriers & Challenges
+        </h2>
+        <div id="barriers-content" class="markdown-content"></div>
+      </div>
+      
+      <div class="card" style="margin-bottom: 1.5rem; border-left: 4px solid var(--positive);">
+        <h2 style="margin-top:0; color:var(--positive); display:flex; align-items:center; gap:0.5rem;">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+          Potential Opportunities
+        </h2>
+        <div id="opportunities-content" class="markdown-content"></div>
+      </div>
+      
+      <div class="card" style="margin-bottom: 1.5rem; border-left: 4px solid var(--accent);">
+        <h2 style="margin-top:0; color:var(--accent); display:flex; align-items:center; gap:0.5rem;">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+          Practical Use Cases
+        </h2>
+        <div id="usecases-content" class="markdown-content"></div>
+      </div>
+      
+      <div class="card">
+        <h2 style="margin-top:0;">Key Evidence from Reddit</h2>
+        <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">Most insightful comments automatically screened by AI.</p>
+        <div id="evidence-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadTechList() {
+      try {
+        const res = await fetch('/api/sentiment');
+        const data = await res.json();
+        const posts = Papa.parse(data.posts, { header: true, skipEmptyLines: true }).data;
+        
+        const techs = new Set();
+        posts.forEach(p => {
+          if (p.tech_tag && p.tech_tag !== 'nan') techs.add(p.tech_tag);
+        });
+        
+        const select = document.getElementById('techSelect');
+        select.innerHTML = '<option value="">-- Select a Technology --</option>';
+        Array.from(techs).sort().forEach(t => {
+          select.innerHTML += `<option value="${t}">${t}</option>`;
+        });
+      } catch (e) {
+        console.error("Failed to load technologies", e);
+        document.getElementById('techSelect').innerHTML = '<option value="">Error loading technologies</option>';
+      }
+    }
+
+    async function runExtraction() {
+      const tech = document.getElementById('techSelect').value;
+      const commentCount = document.getElementById('commentCountSelect').value;
+      if (!tech) {
+        alert('Please select a technology first.');
+        return;
+      }
+      
+      const btn = document.getElementById('extractBtn');
+      const loader = document.getElementById('loading-state');
+      const resultsArea = document.getElementById('results-area');
+      const barriersContent = document.getElementById('barriers-content');
+      const opportunitiesContent = document.getElementById('opportunities-content');
+      const usecasesContent = document.getElementById('usecases-content');
+      const evidenceContainer = document.getElementById('evidence-container');
+      
+      btn.disabled = true;
+      loader.style.display = 'flex';
+      resultsArea.style.display = 'none';
+      
+      try {
+        const response = await fetch('/api/reddit-insights', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tech_tag: tech, comment_count: commentCount })
+        });
+        
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.detail || 'Server error');
+        }
+        
+        const data = await response.json();
+        
+        barriersContent.innerHTML = responseToHtml(data.barriers_summary);
+        opportunitiesContent.innerHTML = responseToHtml(data.opportunities_summary);
+        usecasesContent.innerHTML = responseToHtml(data.use_cases_summary);
+        
+        evidenceContainer.innerHTML = '';
+        if (data.screened_comments && data.screened_comments.length > 0) {
+          data.screened_comments.forEach(c => {
+            evidenceContainer.innerHTML += `
+              <div class="comment-card">
+                <div class="comment-insight">Insight: ${escapeHtml(c.insight)}</div>
+                <div class="comment-quote">"${escapeHtml(c.body)}"</div>
+                ${c.score ? `<div style="font-size:0.8rem; color:var(--muted); margin-top:0.5rem;">Upvotes: ${c.score}</div>` : ''}
+              </div>
+            `;
+          });
+        } else {
+          evidenceContainer.innerHTML = '<p>No specific high-value quotes identified.</p>';
+        }
+        
+        resultsArea.style.display = 'block';
+        
+      } catch (err) {
+        alert("Failed to extract insights: " + err.message);
+      } finally {
+        btn.disabled = false;
+        loader.style.display = 'none';
+      }
+    }
+
+    function escapeHtml(unsafe) {
+      if (!unsafe) return '';
+      return unsafe.toString()
+           .replace(/&/g, "&amp;")
+           .replace(/</g, "&lt;")
+           .replace(/>/g, "&gt;")
+           .replace(/"/g, "&quot;")
+           .replace(/'/g, "&#039;");
+    }
+
+    function responseToHtml(text) {
+      if (!text) return '';
+      let s = escapeHtml(text);
+      s = s.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+      s = s.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+      s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      s = s.replace(/^- (.+)$/gm, '<li>$1</li>');
+      // Wrap consecutive li tags in ul
+      s = s.replace(/(<li>.*<\/li>(?:\s*<li>.*<\/li>)*)/g, '<ul>$1</ul>');
+      s = s.replace(/\n\n/g, '</p><p>');
+      s = s.replace(/\n/g, '<br>');
+      if (!s.startsWith('<p>')) s = '<p>' + s + '</p>';
+      return s;
+    }
+
+    window.onload = loadTechList;
+  </script>
+</body>
+</html>

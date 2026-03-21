@@ -15,17 +15,18 @@ chunking:
   overlap_tokens: 100
   max_overlap_tokens: 150
 
-# Embedding
+# Embedding (one chunk per request is slower but more reliable for slow APIs)
 embedding:
   model: "text-embedding-3-small"
   dimensions: 1536
-  batch_size: 50
+  batch_size: 1
   max_chunks_per_run: 500
+  timeout_seconds: 300
 
-# Retrieval
+# Retrieval (max_chunks_per_source: 2 encourages multiple papers in each answer)
 retrieval:
-  top_k: 10
-  max_chunks_per_source: 3
+  top_k: 12
+  max_chunks_per_source: 2
   min_similarity_threshold: 0.0
 
 # LLM (synthesis) — set api_key and base_url in settings.yaml or use env OPENAI_API_KEY / OPENAI_BASE_URL
@@ -35,6 +36,17 @@ llm:
   max_tokens: 2048
   base_url: null
   api_key: null
+
+# Adaptive RAG (dynamic sections + evidence confidence)
+adaptive_rag:
+  use_intent_classification: true   # choose content blocks from query intent
+  min_confidence: 0.25              # if retrieval score below this, use only summary + key_findings + sources
+
+# Deep research (multi-agent pipeline) — longer reports
+deep_research:
+  report_max_tokens: 8192           # max tokens for the final report (default 8192; increase for longer reports)
+  extraction_max_tokens: 4096       # max tokens for evidence extraction JSON (default 4096)
+  max_evidence_chars: 20000         # max evidence text sent to report agent (default 20000)
 
 # System identity for prompts
 system_identity: "Technology Strategy Analyst for JLR specializing in emerging AEC design technologies."

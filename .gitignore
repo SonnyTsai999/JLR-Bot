@@ -5,9 +5,13 @@ __pycache__/
 *.pyc
 
 # Data and large binaries (node_index.json is tracked for Vercel)
-data/
+# Keep data/raw_pdfs/ folder in repo; do not commit PDFs
+data/raw_pdfs/*.pdf
+data/raw_pdfs/**/*.pdf
+data/processed_chunks/
 index/faiss.index
 index/metadata.jsonl
+index/reddit_index.json
 
 # Secrets (set OPENAI_API_KEY in Vercel env vars)
 config/settings.yaml

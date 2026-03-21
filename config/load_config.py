@@ -41,7 +41,13 @@ def _default_config() -> dict[str, Any]:
             "overlap_tokens": 100,
             "max_overlap_tokens": 150,
         },
-        "embedding": {"model": "text-embedding-3-large", "dimensions": 3072},
+        "embedding": {
+            "model": "text-embedding-3-small",
+            "dimensions": 1536,
+            "batch_size": 1,
+            "max_chunks_per_run": 500,
+            "timeout_seconds": 300,
+        },
         "retrieval": {
             "top_k": 10,
             "max_chunks_per_source": 3,

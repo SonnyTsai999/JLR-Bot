@@ -1,6 +1,6 @@
 """
 API server for JLR Technology Intelligence Assistant.
-Exposes /query (POST) and /health (GET). No external internet retrieval.
+Exposes /query (POST), /health (GET). Deep research is only on the Node server (POST /api/deep-research).
 """
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from config.load_config import load_config, get_api_key
 from backend.retrieve import retrieve
 from backend.synthesize import synthesize
+from backend.adaptive_rag import classify_intent, select_blocks_with_confidence
 
 try:
     from fastapi import FastAPI, HTTPException, Request
@@ -65,6 +66,14 @@ def create_app() -> "FastAPI":
         from fastapi.responses import Response
         return Response(status_code=204)
 
+    @app.post("/api/deep-research")
+    async def deep_research_stub(request: Request):
+        """Deep research runs on the Node stack. Return 501 with JSON so the frontend can show a clear message."""
+        raise HTTPException(
+            status_code=501,
+            detail="Deep research is only available on the Node server. Run: npm run dev and open http://localhost:3000",
+        )
+
     @app.post("/query")
     async def post_query(request: Request):
         try:
@@ -96,7 +105,18 @@ def create_app() -> "FastAPI":
                 lifecycle_stage=lifecycle_stage,
                 api_key=api_key,
             )
-            answer = synthesize(query, chunks, config=config, api_key=api_key)
+            adaptive_cfg = config.get("adaptive_rag", {})
+            use_intent = adaptive_cfg.get("use_intent_classification", True)
+            min_confidence = adaptive_cfg.get("min_confidence", 0.25)
+            intent_blocks = classify_intent(
+                query, config=config, api_key=api_key, use_llm=use_intent
+            )
+            blocks = select_blocks_with_confidence(
+                intent_blocks, chunks, min_confidence=min_confidence
+            )
+            answer = synthesize(
+                query, chunks, config=config, api_key=api_key, blocks=blocks
+            )
             # Deduplicate sources by DOI (or apa_citation) so each paper appears once
             seen = set()
             sources_used = []

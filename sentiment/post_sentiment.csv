@@ -1,0 +1,635 @@
+post_id,tech_tag,month,compound,label
+1pq34ur,AI,2025-12,-0.9566,Negative
+1mcyhlz,AI,2025-07,0.416,Positive
+1mi4kwh,AI,2025-08,0.7143,Positive
+1qjrxul,AI,2026-01,0.2263,Positive
+1h28uho,AI,2024-11,0.0,Neutral
+1qpugsz,AI,2026-01,0.0,Neutral
+1n4tgf8,AI,2025-08,0.2083,Positive
+1koxp4b,AI,2025-05,0.0,Neutral
+1ljntln,AI,2025-06,0.9593,Positive
+1j45aju,AI,2025-03,0.8718,Positive
+1el7jn1,AI,2024-08,-0.787,Negative
+1cu00f4,AI,2024-05,0.3612,Positive
+1dpewu3,AI,2024-06,0.8808,Positive
+1gp14kf,AI,2024-11,0.9773,Positive
+1cceb7d,AI,2024-04,0.6124,Positive
+1bc7s0x,AI,2024-03,-0.4939,Negative
+1bvw5cl,AI,2024-04,0.966,Positive
+1l38h3c,AM_3Dprinting,2025-06,0.9925,Positive
+1ik12q3,AM_3Dprinting,2025-02,0.9751,Positive
+1kudvx8,AM_3Dprinting,2025-05,0.6214,Positive
+1jcn8t6,AM_3Dprinting,2025-03,0.0,Neutral
+1mqk02q,AM_3Dprinting,2025-08,0.0,Neutral
+1hdam20,AM_3Dprinting,2024-12,0.0,Neutral
+1mwo879,AM_3Dprinting,2025-08,0.4976,Positive
+1myhopx,AM_3Dprinting,2025-08,0.6007,Positive
+1gk4273,AM_3Dprinting,2024-11,0.0,Neutral
+1l9v674,AM_3Dprinting,2025-06,0.0,Neutral
+1fjfrk0,AM_3Dprinting,2024-09,0.0,Neutral
+1imx723,BIM,2025-02,0.8736,Positive
+1rb1j71,BIM,2026-02,0.8991,Positive
+1qntxas,BIM,2026-01,0.5803,Positive
+1n6gvy6,BIM,2025-09,0.7627,Positive
+1nbl0k5,BIM,2025-09,0.2869,Positive
+1l6iq0m,BIM,2025-06,0.957,Positive
+1ivjdg3,BIM,2025-02,0.9923,Positive
+1i3wqpg,BIM,2025-01,0.8156,Positive
+1i4zcj6,BIM,2025-01,0.9105,Positive
+1g215er,BIM,2024-10,0.797,Positive
+1he0jpu,BIM,2024-12,0.8672,Positive
+1ekb9if,BIM,2024-08,0.7319,Positive
+1f79c7c,BIM,2024-09,0.2023,Positive
+1dsltbb,BIM,2024-07,0.8426,Positive
+1bnjuu4,BIM,2024-03,0.9211,Positive
+1bly3xr,BIM,2024-03,0.7993,Positive
+1bk55ik,BIM,2024-03,0.6597,Positive
+1bosx1o,BIM,2024-03,0.0,Neutral
+1bfj561,Prefabrication,2024-03,0.9474,Positive
+1kltufj,Prefabrication,2025-05,0.0,Neutral
+1n4ko60,Prefabrication,2025-08,0.426,Positive
+1c854v3,Prefabrication,2024-04,0.9941,Positive
+1c3skl5,Prefabrication,2024-04,0.9535,Positive
+1kb2sc1,Prefabrication,2025-04,0.4329,Positive
+1g2uiiw,Prefabrication,2024-10,0.7337,Positive
+1ob3rit,RFID,2025-10,0.0,Neutral
+1r2g9hs,RFID,2026-02,0.8979,Positive
+1pld5na,UAV,2025-12,0.25,Positive
+1hhwhcp,UAV,2024-12,0.0,Neutral
+1hto3qw,UAV,2025-01,0.0,Neutral
+1q9pt2u,UAV,2026-01,0.1154,Positive
+1qoe1n2,UAV,2026-01,0.9399,Positive
+1q2qbg1,UAV,2026-01,0.9731,Positive
+1qvuuhd,UAV,2026-02,0.5007,Positive
+1p5cstm,UAV,2025-11,0.9718,Positive
+1nb6xao,UAV,2025-09,0.9272,Positive
+1h2ig17,UAV,2024-11,-0.9531,Negative
+1hn6pye,UAV,2024-12,0.8402,Positive
+1j9jxz1,UAV,2025-03,-0.6994,Negative
+1ju5bad,UAV,2025-04,0.9666,Positive
+1q3ww6v,XR,2026-01,0.0,Neutral
+1q1sj9b,XR,2026-01,0.9797,Positive
+1enitjr,XR,2024-08,0.8316,Positive
+1ms9tiu,XR,2025-08,0.3182,Positive
+1ik316p,XR,2025-02,0.8887,Positive
+1d0ij08,IoT,2024-05,0.9144,Positive
+1hohlj3,IoT,2024-12,0.9552,Positive
+1cr63np,IoT,2024-05,0.5927,Positive
+1l8em69,Simulation,2025-06,0.9112,Positive
+1nnkese,Simulation,2025-09,0.0,Neutral
+1e7ypx4,Simulation,2024-07,0.7776,Positive
+1q0klq5,Computational Fluid Dynamics,2025-12,0.9807,Positive
+1fi7lej,Computational Fluid Dynamics,2024-09,-0.6852,Negative
+1cwzibh,Computational Fluid Dynamics,2024-05,0.7579,Positive
+1k8bv0p,Digital Twins,2025-04,0.9877,Positive
+1k8bzap,Digital Twins,2025-04,0.9877,Positive
+1lec6wj,Digital Twins,2025-06,0.8625,Positive
+1jhub55,Generative Design,2025-03,-0.3756,Negative
+1ofa45g,Parametric Design,2025-10,0.9044,Positive
+1dbt6lg,Parametric Design,2024-06,0.9756,Positive
+1davxpo,Parametric Design,2024-06,0.89,Positive
+1mslpvs,SHM (Structural Health Monitoring),2025-08,0.8635,Positive
+1de4t0c,SHM (Structural Health Monitoring),2024-06,0.9521,Positive
+1j1vre5,Blockchain,2025-03,0.9526,Positive
+1m6wgsq,Big Data,2025-07,0.9771,Positive
+1jilv52,IoT,2025-03,0.9997,Positive
+1f3wyj6,IoT,2024-08,0.9448,Positive
+1be3uj2,IoT,2024-03,0.9007,Positive
+1mu4y0b,Geographic Information Systems (GIS),2025-08,0.9331,Positive
+1pxcg8n,Geographic Information Systems (GIS),2025-12,-0.2305,Negative
+1qse1oy,Geographic Information Systems (GIS),2026-01,0.9219,Positive
+1qylp0b,Geographic Information Systems (GIS),2026-02,0.8932,Positive
+1qb1xb5,Geographic Information Systems (GIS),2026-01,0.6298,Positive
+1lgo2gw,Geographic Information Systems (GIS),2025-06,0.9653,Positive
+1mkwvwz,Geographic Information Systems (GIS),2025-08,0.9864,Positive
+1k89roy,Geographic Information Systems (GIS),2025-04,0.7176,Positive
+1l9mla8,Geographic Information Systems (GIS),2025-06,0.8591,Positive
+1lkjaea,Geographic Information Systems (GIS),2025-06,0.9911,Positive
+1l8ehe3,Geographic Information Systems (GIS),2025-06,0.9687,Positive
+1qq720e,Prefabrication,2026-01,0.2466,Positive
+1i2p7h1,Prefabrication,2025-01,0.836,Positive
+1c3smz1,Prefabrication,2024-04,0.9535,Positive
+1ik0p71,Prefabrication,2025-02,0.9751,Positive
+1i8vwff,Prefabrication,2025-01,0.0,Neutral
+1cujlp8,Prefabrication,2024-05,0.8146,Positive
+1f6ieaj,Prefabrication,2024-09,0.9855,Positive
+1b7pk9y,Prefabrication,2024-03,0.8715,Positive
+1cb4l29,Prefabrication,2024-04,0.9765,Positive
+1lqyvm3,Simulation,2025-07,0.0,Neutral
+1hnwpc8,Simulation,2024-12,0.9365,Positive
+1dl0pop,Simulation,2024-06,0.9287,Positive
+1fruot1,Simulation,2024-09,0.9269,Positive
+1r7e4w1,Simulation,2026-02,0.4195,Positive
+1r7vvs9,Simulation,2026-02,0.981,Positive
+1r6y8i2,Simulation,2026-02,0.9274,Positive
+1qcth06,Simulation,2026-01,0.9305,Positive
+1ov5a47,Simulation,2025-11,0.714,Positive
+1ph3rva,Simulation,2025-12,-0.2869,Negative
+1p9074m,Simulation,2025-11,-0.4989,Negative
+1q2gai5,Simulation,2026-01,0.9388,Positive
+1peswkz,Simulation,2025-12,0.8968,Positive
+1pc9hry,Simulation,2025-12,0.9183,Positive
+1owybc5,Simulation,2025-11,-0.8176,Negative
+1p3of2d,Simulation,2025-11,0.983,Positive
+1p1o73x,Simulation,2025-11,0.9714,Positive
+1os1v2n,Simulation,2025-11,0.7845,Positive
+1o76rir,Simulation,2025-10,-0.5167,Negative
+1oh7p4d,Simulation,2025-10,0.9447,Positive
+1karipx,Simulation,2025-04,-0.7757,Negative
+1nel89a,Simulation,2025-09,0.9746,Positive
+1p4u6ej,AM_3Dprinting,2025-11,0.9898,Positive
+1ozhy7l,AM_3Dprinting,2025-11,0.0,Neutral
+1inc1tl,AM_3Dprinting,2025-02,0.5845,Positive
+1hw0wr8,AM_3Dprinting,2025-01,0.9142,Positive
+1hbup8r,AM_3Dprinting,2024-12,0.0,Neutral
+1f8ua0t,AM_3Dprinting,2024-09,0.0,Neutral
+1olvrue,AM_3Dprinting,2025-11,0.9912,Positive
+1bama3z,AM_3Dprinting,2024-03,0.0,Neutral
+1nzexr7,BIM,2025-10,0.9854,Positive
+1mtou0t,BIM,2025-08,0.9871,Positive
+1k64foq,BIM,2025-04,0.7506,Positive
+1durllj,BIM,2024-07,0.9831,Positive
+1qx81bu,BIM,2026-02,-0.9071,Negative
+1qfgpv1,BIM,2026-01,0.5859,Positive
+1q1wgde,BIM,2026-01,0.9463,Positive
+1q6eitv,BIM,2026-01,0.0,Neutral
+1pchn7s,BIM,2025-12,0.9388,Positive
+1ojv46p,BIM,2025-10,0.7313,Positive
+1pf635f,BIM,2025-12,0.8312,Positive
+1plc3tj,BIM,2025-12,0.9319,Positive
+1oj1xoe,BIM,2025-10,0.3736,Positive
+1pizxm6,BIM,2025-12,0.9738,Positive
+1p3rowa,BIM,2025-11,0.0,Neutral
+1o5q13w,BIM,2025-10,0.9491,Positive
+1oxocjp,BIM,2025-11,0.8796,Positive
+1otcyrr,BIM,2025-11,0.0,Neutral
+1o84lfr,BIM,2025-10,0.714,Positive
+1n6gu2z,BIM,2025-09,0.7627,Positive
+1lbeoee,BIM,2025-06,0.9867,Positive
+1nsfckm,BIM,2025-09,0.0,Neutral
+1nv4w3t,BIM,2025-10,0.0,Neutral
+1n6h3lp,BIM,2025-09,0.7627,Positive
+1m0nbyx,BIM,2025-07,0.0,Neutral
+1mbmbn2,BIM,2025-07,0.8928,Positive
+1mcxsoc,BIM,2025-07,0.8343,Positive
+1ooj9js,XR,2025-11,0.9958,Positive
+1hve6yb,XR,2025-01,0.6597,Positive
+1fxe50n,XR,2024-10,0.0,Neutral
+1pu2om5,UAV,2025-12,0.8948,Positive
+1cchmvk,UAV,2024-04,0.6488,Positive
+1qgg7yj,UAV,2026-01,0.9877,Positive
+1qxcnqx,UAV,2026-02,0.4591,Positive
+1l5q4hp,UAV,2025-06,0.9754,Positive
+1nc83cw,UAV,2025-09,0.9538,Positive
+1l1zk8k,UAV,2025-06,0.3861,Positive
+1l15eyx,UAV,2025-06,0.8641,Positive
+1g0oblp,UAV,2024-10,0.9081,Positive
+1q3pr7l,AI,2026-01,0.8727,Positive
+1me2i5k,AI,2025-07,0.3159,Positive
+1jiibez,AI,2025-03,-0.3182,Negative
+1pibrkg,AI,2025-12,0.9873,Positive
+1pjt2kl,AI,2025-12,0.9749,Positive
+1r8oowu,AI,2026-02,0.0,Neutral
+1qkpoj0,AI,2026-01,0.5472,Positive
+1qsfs5f,AI,2026-01,0.3736,Positive
+1qk3u69,AI,2026-01,0.6946,Positive
+1qj8otl,AI,2026-01,0.6662,Positive
+1q31lii,AI,2026-01,-0.1426,Negative
+1pwyjh4,AI,2025-12,0.8155,Positive
+1lie9dk,AI,2025-06,0.899,Positive
+1qaasi0,AI,2026-01,0.9753,Positive
+1kwa0lf,AI,2025-05,0.3939,Positive
+1qixmhj,AI,2026-01,-0.448,Negative
+1qnpe7y,AI,2026-01,-0.7906,Negative
+1pfkp0x,AI,2025-12,0.9117,Positive
+1r1mr4w,AI,2026-02,0.0,Neutral
+1p0r50z,AI,2025-11,-0.5191,Negative
+1qj8qeh,AI,2026-01,0.0,Neutral
+1gmi8u7,AI,2024-11,0.9492,Positive
+1nazwil,AI,2025-09,0.7783,Positive
+1me3ejp,AI,2025-07,0.4137,Positive
+1my4zh4,AI,2025-08,0.9686,Positive
+1mem3tj,AI,2025-08,0.5919,Positive
+1clhaj7,AI,2024-05,0.9664,Positive
+1hgbl1c,AI,2024-12,0.7351,Positive
+1ngt13p,AI,2025-09,0.9487,Positive
+1m2rzid,AI,2025-07,0.8994,Positive
+1mwhx7i,AI,2025-08,0.971,Positive
+1l0i4bi,AI,2025-06,0.5204,Positive
+1l4b5h6,AI,2025-06,0.5719,Positive
+1kd8ee6,AI,2025-05,-0.5007,Negative
+1j115em,AI,2025-03,0.9894,Positive
+1k0esg2,AI,2025-04,0.9273,Positive
+1jeqv4s,AI,2025-03,0.959,Positive
+1i9k150,AI,2025-01,0.9713,Positive
+1epahv0,AI,2024-08,-0.7987,Negative
+1eczzqc,Cloud Computing,2024-07,0.9998,Positive
+1lugd7w,Digital Fabrication,2025-07,0.9506,Positive
+1hx7v8o,Digital Fabrication,2025-01,0.0,Neutral
+1jaltni,Digital Fabrication,2025-03,0.1274,Positive
+1e9lnia,Generative Design,2024-07,0.9738,Positive
+1mf3a2y,Parametric Design,2025-08,0.9231,Positive
+1eyjp4n,Parametric Design,2024-08,0.6808,Positive
+1oh8e4s,Parametric Design,2025-10,0.6868,Positive
+1qutq9w,Parametric Design,2026-02,0.9598,Positive
+1hvt1nu,Parametric Design,2025-01,0.9279,Positive
+1hrczqp,Parametric Design,2025-01,0.3818,Positive
+1f7uyih,Parametric Design,2024-09,0.7539,Positive
+1dgljc8,Parametric Design,2024-06,0.7273,Positive
+1kgmb9b,Digital Twins,2025-05,0.9146,Positive
+1hh6n5l,Prefabrication,2024-12,0.93,Positive
+1mpsh53,Prefabrication,2025-08,0.4019,Positive
+1ljjgu0,Prefabrication,2025-06,0.0,Neutral
+1j9fo85,Prefabrication,2025-03,0.6808,Positive
+1huulf0,Prefabrication,2025-01,-0.2406,Negative
+1fxgee8,Prefabrication,2024-10,0.5267,Positive
+1cnzti1,Prefabrication,2024-05,0.2495,Positive
+1bxojcv,Prefabrication,2024-04,0.8053,Positive
+1q3jsk2,AM_3Dprinting,2026-01,0.0,Neutral
+1qfrb58,AM_3Dprinting,2026-01,0.978,Positive
+1plhkfx,AM_3Dprinting,2025-12,0.9805,Positive
+1qkhjc3,AM_3Dprinting,2026-01,0.892,Positive
+1iqca8x,AM_3Dprinting,2025-02,0.0,Neutral
+1bviuvk,AM_3Dprinting,2024-04,0.9358,Positive
+1janpjt,XR,2025-03,0.9925,Positive
+1ie2my3,XR,2025-01,0.504,Positive
+1jifbuj,XR,2025-03,0.9948,Positive
+1gxwl21,XR,2024-11,0.891,Positive
+1icdjl5,UAV,2025-01,0.8431,Positive
+1qk6ig0,Geographic Information Systems (GIS),2026-01,0.9728,Positive
+1lvrjur,Geographic Information Systems (GIS),2025-07,0.8074,Positive
+1r7owy7,Geographic Information Systems (GIS),2026-02,0.9308,Positive
+1d0dpc6,Geographic Information Systems (GIS),2024-05,0.8321,Positive
+1lw0w2a,BIM,2025-07,0.9592,Positive
+1lt8m1x,BIM,2025-07,0.9817,Positive
+1m2kv8y,BIM,2025-07,0.9823,Positive
+1hhpmim,BIM,2024-12,0.9962,Positive
+1pdmv1u,BIM,2025-12,-0.8442,Negative
+1ov5ezq,BIM,2025-11,-0.9134,Negative
+1q61xmz,BIM,2026-01,0.9789,Positive
+1quy04l,BIM,2026-02,-0.5171,Negative
+1podhli,BIM,2025-12,0.9628,Positive
+1r6twv4,BIM,2026-02,0.9767,Positive
+1qwxims,BIM,2026-02,0.9337,Positive
+1qdeml6,BIM,2026-01,0.9256,Positive
+1qkca93,BIM,2026-01,0.9684,Positive
+1qh28oe,BIM,2026-01,0.0,Neutral
+1hzswil,BIM,2025-01,0.8873,Positive
+1q8pzp7,BIM,2026-01,0.9585,Positive
+1o4ub2i,BIM,2025-10,0.0,Neutral
+1p6r3ny,BIM,2025-11,0.2406,Positive
+1l30l8r,BIM,2025-06,-0.8473,Negative
+1mfhav0,BIM,2025-08,0.2709,Positive
+1oj7zz0,BIM,2025-10,0.0,Neutral
+1m1ftlu,BIM,2025-07,0.7149,Positive
+1lwyi3r,BIM,2025-07,0.9929,Positive
+1k342sp,BIM,2025-04,-0.9178,Negative
+1exxby3,BIM,2024-08,0.9988,Positive
+1l8sj0u,BIM,2025-06,0.9757,Positive
+1kwwo8l,BIM,2025-05,0.836,Positive
+1jryrz7,BIM,2025-04,0.9784,Positive
+1g1yv4u,BIM,2024-10,0.797,Positive
+1fum4iq,BIM,2024-10,0.9349,Positive
+1i9tzk4,BIM,2025-01,0.9156,Positive
+1hq1g2l,BIM,2024-12,0.8619,Positive
+1eogtst,BIM,2024-08,0.9909,Positive
+1fltvon,BIM,2024-09,0.8498,Positive
+1bfyrmv,Simulation,2024-03,0.9805,Positive
+1o53nuc,AI,2025-10,0.9956,Positive
+1pcvris,AI,2025-12,0.9488,Positive
+1nqr9er,AI,2025-09,0.0,Neutral
+1krn9vd,AI,2025-05,0.8807,Positive
+1ioa1gv,AI,2025-02,0.9163,Positive
+1hv8kmu,AI,2025-01,0.9729,Positive
+1f9yalb,AI,2024-09,0.9558,Positive
+1kmhj9l,AI,2025-05,0.7991,Positive
+1eyvg1h,AI,2024-08,0.9795,Positive
+1eanyam,AI,2024-07,0.8796,Positive
+1eijmkh,AI,2024-08,0.5023,Positive
+1cwq4nh,AI,2024-05,0.8992,Positive
+1ds0lmb,AI,2024-06,0.5775,Positive
+1qzxwv5,SHM (Structural Health Monitoring),2026-02,0.9281,Positive
+1fwcmq2,Generative Design,2024-10,0.6764,Positive
+1betmw5,Generative Design,2024-03,0.0976,Positive
+1ootrp7,Digital Twins,2025-11,0.9807,Positive
+1pencro,Digital Twins,2025-12,0.9932,Positive
+1raweqq,Digital Twins,2026-02,0.9715,Positive
+1mx7578,Digital Twins,2025-08,0.9823,Positive
+1mccr62,Digital Twins,2025-07,0.9631,Positive
+1m1pmy7,Digital Twins,2025-07,0.9731,Positive
+1m8cnfc,Digital Twins,2025-07,0.9731,Positive
+1fayufd,Digital Twins,2024-09,0.3612,Positive
+1kbpe48,Digital Twins,2025-04,0.9911,Positive
+1m1vudc,Digital Twins,2025-07,0.0,Neutral
+1djcwyd,Digital Twins,2024-06,0.8357,Positive
+1kdt4ng,Digital Twins,2025-05,0.5797,Positive
+1c5w2zm,Digital Twins,2024-04,0.9907,Positive
+1cgeynb,Digital Twins,2024-04,0.4767,Positive
+1kqfsu9,Big Data,2025-05,0.9838,Positive
+1elnxuo,Big Data,2024-08,0.7987,Positive
+1gg4mnr,Big Data,2024-10,0.7686,Positive
+1gg72oi,Big Data,2024-10,0.8941,Positive
+1o26ft4,Big Data,2025-10,-0.2739,Negative
+1htsrc2,IoT,2025-01,0.8555,Positive
+1m96t9t,IoT,2025-07,0.9651,Positive
+1m93ul7,IoT,2025-07,0.6369,Positive
+1dv56zh,IoT,2024-07,0.9516,Positive
+1ltgorn,Parametric Design,2025-07,0.9427,Positive
+1pc114q,AM_3Dprinting,2025-12,0.9562,Positive
+1l2qbd8,Prefabrication,2025-06,0.8216,Positive
+1dx9skq,UAV,2024-07,0.9587,Positive
+1of77he,Geographic Information Systems (GIS),2025-10,0.9917,Positive
+1ensdit,XR,2024-08,0.9509,Positive
+1kuu056,XR,2025-05,0.9705,Positive
+1jo6uij,XR,2025-03,0.5514,Positive
+1dc7uz7,XR,2024-06,0.8915,Positive
+1ff4ybd,XR,2024-09,0.4327,Positive
+1oh7nwc,Simulation,2025-10,0.9447,Positive
+1mswczi,Simulation,2025-08,0.4404,Positive
+1k95ssh,Simulation,2025-04,0.6486,Positive
+1gvght5,Simulation,2024-11,0.9879,Positive
+1k6qivw,Simulation,2025-04,0.8555,Positive
+1hzbdo5,Simulation,2025-01,0.0772,Positive
+1es3wg3,Simulation,2024-08,0.907,Positive
+1lsxq1n,BIM,2025-07,0.9817,Positive
+1mcstvf,BIM,2025-07,0.9889,Positive
+1i6h9l8,BIM,2025-01,0.4404,Positive
+1k64emz,BIM,2025-04,0.7506,Positive
+1fpwamb,BIM,2024-09,0.6322,Positive
+1cfycuz,BIM,2024-04,0.5411,Positive
+1durf2g,BIM,2024-07,0.9831,Positive
+1hhpn6i,BIM,2024-12,0.9962,Positive
+1o9z2qz,BIM,2025-10,0.4215,Positive
+1puky4w,BIM,2025-12,-0.3803,Negative
+1r7bpld,BIM,2026-02,0.7557,Positive
+1qj7830,BIM,2026-01,0.5694,Positive
+1qvlajy,BIM,2026-02,0.212,Positive
+1kx413m,BIM,2025-05,0.9474,Positive
+1qgbyfa,AI,2026-01,0.5003,Positive
+1n5atyt,AI,2025-09,0.9617,Positive
+1jelv6m,AI,2025-03,-0.8832,Negative
+1h0zevx,AI,2024-11,0.9641,Positive
+1p7y5mn,AI,2025-11,0.9611,Positive
+1hy497i,AI,2025-01,0.833,Positive
+1jdfx5d,AI,2025-03,0.0,Neutral
+1l8sfl0,AI,2025-06,0.95,Positive
+1dueezv,AI,2024-07,-0.8331,Negative
+1bdkubm,AI,2024-03,0.8561,Positive
+1bvw6wi,AI,2024-04,0.966,Positive
+1e66toy,AI,2024-07,0.9964,Positive
+1r2jud1,AI,2026-02,0.9544,Positive
+1nyurah,AI,2025-10,0.983,Positive
+1pdun26,AI,2025-12,0.8146,Positive
+1piv0as,AI,2025-12,-0.4186,Negative
+1oibnaw,AI,2025-10,0.8646,Positive
+1r18wnx,AI,2026-02,0.9769,Positive
+1qbj7rk,AI,2026-01,0.9873,Positive
+1ocdiv0,AI,2025-10,0.8767,Positive
+1r5lgur,AI,2026-02,0.9376,Positive
+1pjtbn2,AI,2025-12,-0.3877,Negative
+1mdb1mk,AI,2025-07,0.9598,Positive
+1p8ddct,AI,2025-11,0.9478,Positive
+1qxem6b,AI,2026-02,0.921,Positive
+1nnpipj,AI,2025-09,0.0,Neutral
+1nfud63,AI,2025-09,0.9832,Positive
+1mprlhl,AI,2025-08,0.9039,Positive
+1lg4q55,Computational Fluid Dynamics,2025-06,0.9298,Positive
+1itu5f1,Computational Fluid Dynamics,2025-02,0.1027,Positive
+1fjomta,Computational Fluid Dynamics,2024-09,0.9675,Positive
+1ltnpcx,SHM (Structural Health Monitoring),2025-07,0.765,Positive
+1kjjwjm,SHM (Structural Health Monitoring),2025-05,0.0,Neutral
+1de4smr,SHM (Structural Health Monitoring),2024-06,0.9521,Positive
+1jv5ftd,Parametric Design,2025-04,0.7181,Positive
+1fikczk,Parametric Design,2024-09,0.9655,Positive
+1lfgunf,Parametric Design,2025-06,0.9843,Positive
+1ine4fy,AM_3Dprinting,2025-02,-0.6246,Negative
+1igr5xx,AM_3Dprinting,2025-02,0.9735,Positive
+1inc6ho,AM_3Dprinting,2025-02,0.5845,Positive
+1hvxlw1,AM_3Dprinting,2025-01,0.9142,Positive
+1ik13z9,AM_3Dprinting,2025-02,0.9751,Positive
+1g23vmt,AM_3Dprinting,2024-10,0.9643,Positive
+1olvjmq,AM_3Dprinting,2025-11,0.9912,Positive
+1lx9gza,AM_3Dprinting,2025-07,0.9816,Positive
+1lpige8,Prefabrication,2025-07,0.0,Neutral
+1fginwm,Prefabrication,2024-09,-0.0387,Neutral
+1i6nrqc,Prefabrication,2025-01,-0.1531,Negative
+1otvorq,Prefabrication,2025-11,0.9345,Positive
+1oeuie7,Prefabrication,2025-10,0.937,Positive
+1bfdqcf,Prefabrication,2024-03,0.0,Neutral
+1lnj7ot,Prefabrication,2025-06,-0.6369,Negative
+1m0ta1r,Prefabrication,2025-07,-0.5789,Negative
+1k5spub,Prefabrication,2025-04,0.9916,Positive
+1k9s4j3,Prefabrication,2025-04,0.911,Positive
+1en2emt,Prefabrication,2024-08,0.0,Neutral
+1hksyww,Prefabrication,2024-12,0.9231,Positive
+1h159s3,Prefabrication,2024-11,0.992,Positive
+1im2aya,UAV,2025-02,0.1877,Positive
+1krpk9y,XR,2025-05,0.0,Neutral
+1hv42ck,XR,2025-01,0.4588,Positive
+1jlcu0e,XR,2025-03,-0.8064,Negative
+1q8fs6w,Simulation,2026-01,0.0,Neutral
+1i9h5lh,Simulation,2025-01,0.25,Positive
+1qbt3h1,Simulation,2026-01,0.9288,Positive
+1pxdz2q,Simulation,2025-12,0.9865,Positive
+1nfz2u1,Simulation,2025-09,0.9876,Positive
+1le2unp,Simulation,2025-06,0.9062,Positive
+1p2gvho,Simulation,2025-11,0.0,Neutral
+1mmz693,Simulation,2025-08,0.0,Neutral
+1p3mi3i,Simulation,2025-11,0.9332,Positive
+1jucaa0,Simulation,2025-04,0.8738,Positive
+1m2q9ow,Simulation,2025-07,0.9744,Positive
+1ipahj5,Simulation,2025-02,0.6281,Positive
+1jkanfb,Simulation,2025-03,0.8839,Positive
+1hjugzl,Simulation,2024-12,0.8895,Positive
+1isvuxh,Simulation,2025-02,0.9874,Positive
+1ggyow4,Simulation,2024-11,0.9886,Positive
+1gv0rtn,Simulation,2024-11,0.977,Positive
+1fjqvk5,Simulation,2024-09,0.5719,Positive
+1r7y1c0,BIM,2026-02,0.9323,Positive
+1qrqm90,BIM,2026-01,0.9217,Positive
+1ocy6h4,BIM,2025-10,0.9482,Positive
+1qgcuon,BIM,2026-01,0.0,Neutral
+1mtfqz2,BIM,2025-08,0.9299,Positive
+1krhnja,BIM,2025-05,0.8951,Positive
+1mf4etm,BIM,2025-08,0.3182,Positive
+1hub2hu,BIM,2025-01,0.9923,Positive
+1g05qmx,BIM,2024-10,0.044,Neutral
+1ddyp66,BIM,2024-06,-0.4588,Negative
+1c30f9t,BIM,2024-04,0.9765,Positive
+1lu0px6,BIM,2025-07,0.9806,Positive
+1kigp15,BIM,2025-05,0.9888,Positive
+1lxbi5u,BIM,2025-07,0.9837,Positive
+1r1wrhf,BIM,2026-02,0.8898,Positive
+1r7b3fy,BIM,2026-02,0.8271,Positive
+1n6j4yq,BIM,2025-09,0.9595,Positive
+1r7b8sk,BIM,2026-02,0.6962,Positive
+1mj0dth,BIM,2025-08,0.9677,Positive
+1n4rh8k,BIM,2025-08,0.9772,Positive
+1fw7kp3,BIM,2024-10,0.9111,Positive
+1ga9f74,BIM,2024-10,0.3878,Positive
+1r1mqxu,AI,2026-02,0.4329,Positive
+1nvmtyn,AI,2025-10,0.9913,Positive
+1mpcmku,AI,2025-08,0.9935,Positive
+1jz0ba4,AI,2025-04,0.9372,Positive
+1r5jfg5,AI,2026-02,-0.7046,Negative
+1ph81ox,AI,2025-12,-0.6322,Negative
+1l8zxfg,AI,2025-06,0.937,Positive
+1mq2vcf,AI,2025-08,0.4019,Positive
+1pylepw,AI,2025-12,0.9702,Positive
+1ohu5dk,AI,2025-10,0.9414,Positive
+1pw98tc,AI,2025-12,0.0,Neutral
+1kth3oy,AI,2025-05,0.2263,Positive
+1mwwmnd,AI,2025-08,0.971,Positive
+1gg7wx9,AI,2024-10,0.7691,Positive
+1gmiae2,AI,2024-11,0.9268,Positive
+1kap7pa,AI,2025-04,0.9693,Positive
+1i904j3,AI,2025-01,0.9042,Positive
+1bji2b1,AI,2024-03,0.8818,Positive
+1iw6r56,AI,2025-02,0.9184,Positive
+1boarbe,AI,2024-03,0.6124,Positive
+1e6hpz2,AI,2024-07,0.0,Neutral
+1hbud8e,AI,2024-12,0.8687,Positive
+1h85z8j,AI,2024-12,0.9316,Positive
+1ckn8hi,AI,2024-05,0.3612,Positive
+1bvwcs3,AI,2024-04,0.966,Positive
+1r36khd,AI,2026-02,0.8738,Positive
+1r1k7bh,AI,2026-02,-0.5408,Negative
+1nwiww4,AI,2025-10,0.5409,Positive
+1nr3406,AI,2025-09,0.9432,Positive
+1p8zpcx,AI,2025-11,0.9848,Positive
+1dk4xf3,Cloud Computing,2024-06,0.9316,Positive
+1i2ex51,RFID,2025-01,0.8604,Positive
+1jtr1h6,Computational Fluid Dynamics,2025-04,0.9569,Positive
+1ddousx,Generative Design,2024-06,0.8611,Positive
+1g4kpx2,Big Data,2024-10,0.9734,Positive
+1byi11d,XR,2024-04,0.6024,Positive
+1fze6z9,XR,2024-10,0.7906,Positive
+1fruunr,Simulation,2024-09,0.9269,Positive
+1ozjiic,Simulation,2025-11,0.6597,Positive
+1fcbg5g,BIM,2024-09,0.0,Neutral
+1oxqh9d,AI,2025-11,-0.9663,Negative
+1r28upl,AI,2026-02,0.8736,Positive
+1ojg16m,AI,2025-10,0.3818,Positive
+1ozj655,AI,2025-11,0.9718,Positive
+1i06s4u,AI,2025-01,-0.8225,Negative
+1czn3vj,AI,2024-05,0.9651,Positive
+1qghrjt,AI,2026-01,0.7608,Positive
+1jxn1kt,AI,2025-04,-0.6562,Negative
+1iivlu9,AI,2025-02,0.8343,Positive
+1g8jt4z,Digital Twins,2024-10,0.4215,Positive
+1oo0e8u,UAV,2025-11,0.6597,Positive
+1jjzox5,UAV,2025-03,0.4404,Positive
+1pj5xji,UAV,2025-12,0.7757,Positive
+1pitj5u,UAV,2025-12,0.0,Neutral
+1ntpjrs,UAV,2025-09,0.6868,Positive
+1latkqy,UAV,2025-06,0.9356,Positive
+1gkvaso,UAV,2024-11,0.6747,Positive
+1glnflm,UAV,2024-11,0.6807,Positive
+1ldeq60,UAV,2025-06,0.9179,Positive
+1ixzahv,UAV,2025-02,0.6072,Positive
+1iszaui,UAV,2025-02,0.5109,Positive
+1geth9u,UAV,2024-10,0.932,Positive
+1ek9dc2,UAV,2024-08,0.802,Positive
+1fz1q7f,UAV,2024-10,-0.3071,Negative
+1bc79z1,UAV,2024-03,0.1306,Positive
+1co3lo4,UAV,2024-05,0.8924,Positive
+1g7iyhm,UAV,2024-10,0.9769,Positive
+1cak2wy,UAV,2024-04,0.9088,Positive
+1esbr2p,UAV,2024-08,0.8831,Positive
+1ccmzy3,UAV,2024-04,0.6705,Positive
+1byefxl,UAV,2024-04,0.7832,Positive
+1nzdvl8,Geographic Information Systems (GIS),2025-10,0.2593,Positive
+1o2c3x8,Geographic Information Systems (GIS),2025-10,0.9877,Positive
+1p6qvq8,Geographic Information Systems (GIS),2025-11,0.983,Positive
+1pqk912,Geographic Information Systems (GIS),2025-12,0.977,Positive
+1ph4kmz,Geographic Information Systems (GIS),2025-12,0.0,Neutral
+1msvl3l,Geographic Information Systems (GIS),2025-08,0.8466,Positive
+1lkhco1,Geographic Information Systems (GIS),2025-06,0.6416,Positive
+1meo1m9,Geographic Information Systems (GIS),2025-08,0.9871,Positive
+1mvhyh1,Geographic Information Systems (GIS),2025-08,0.9763,Positive
+1mw0kkd,Geographic Information Systems (GIS),2025-08,0.6381,Positive
+1ghxzrv,Geographic Information Systems (GIS),2024-11,0.9706,Positive
+1qinc1z,XR,2026-01,0.983,Positive
+1oqjpsu,XR,2025-11,0.9408,Positive
+1p0xkgz,XR,2025-11,0.0,Neutral
+1qj6cit,XR,2026-01,0.9723,Positive
+1lxlrgb,XR,2025-07,0.9909,Positive
+1jbg00u,XR,2025-03,0.9511,Positive
+1l4foh9,XR,2025-06,-0.2382,Negative
+1m763y3,XR,2025-07,0.8344,Positive
+1l3bdf0,XR,2025-06,0.7988,Positive
+1l8w2hc,XR,2025-06,-0.8775,Negative
+1fk2d7d,XR,2024-09,0.972,Positive
+1iusu2g,XR,2025-02,0.0,Neutral
+1cjywtu,XR,2024-05,-0.8761,Negative
+1ha3rlc,Simulation,2024-12,0.7574,Positive
+1nnm83m,BIM,2025-09,0.8126,Positive
+1miyu7c,BIM,2025-08,0.885,Positive
+1n7ajku,BIM,2025-09,0.8979,Positive
+1gvlvwh,BIM,2024-11,0.9806,Positive
+1gxigl1,BIM,2024-11,0.9245,Positive
+1eigeu5,BIM,2024-08,0.8926,Positive
+1n15r18,BIM,2025-08,0.926,Positive
+1hcwrq6,BIM,2024-12,0.8343,Positive
+1ff3kad,BIM,2024-09,0.7184,Positive
+1cb5d3t,BIM,2024-04,-0.0803,Negative
+1r1rzxb,AI,2026-02,0.9276,Positive
+1nlzrgn,AI,2025-09,0.948,Positive
+1pm0t8p,AI,2025-12,-0.4095,Negative
+1mdkrxd,Generative Design,2025-07,0.7941,Positive
+1pgqzm5,AM_3Dprinting,2025-12,0.5112,Positive
+1nxqqn5,AM_3Dprinting,2025-10,0.9428,Positive
+1i5hnts,AM_3Dprinting,2025-01,0.9463,Positive
+1k8es9y,AM_3Dprinting,2025-04,0.9746,Positive
+1oi5tn7,Prefabrication,2025-10,0.9559,Positive
+1bbdfcl,Prefabrication,2024-03,0.9803,Positive
+1kq6juu,Prefabrication,2025-05,0.0,Neutral
+1bvttbd,Prefabrication,2024-04,0.6858,Positive
+1c0lwfd,Prefabrication,2024-04,0.9535,Positive
+1nb62e7,Prefabrication,2025-09,0.6072,Positive
+1l3hk52,Prefabrication,2025-06,0.9981,Positive
+1iwd047,Prefabrication,2025-02,-0.4718,Negative
+1h2pq8u,Prefabrication,2024-11,0.6801,Positive
+1f6ifb5,Prefabrication,2024-09,0.9855,Positive
+1h2htbc,UAV,2024-11,-0.9531,Negative
+1lexr7g,Geographic Information Systems (GIS),2025-06,0.6072,Positive
+1fazw48,Simulation,2024-09,0.897,Positive
+1qo35d8,Simulation,2026-01,0.8504,Positive
+1hmre3c,Simulation,2024-12,0.9871,Positive
+1e9xrya,Simulation,2024-07,0.9907,Positive
+1pp0ibx,BIM,2025-12,0.891,Positive
+1ipzz67,BIM,2025-02,0.6917,Positive
+1cqddbd,BIM,2024-05,0.9864,Positive
+1nxsqcd,AM_3Dprinting,2025-10,0.0,Neutral
+1mtzsah,UAV,2025-08,0.9042,Positive
+1mtzugb,UAV,2025-08,0.8176,Positive
+1j1unxn,Simulation,2025-03,0.9956,Positive
+1mlpcbj,Generative Design,2025-08,0.9201,Positive
+1qn9bkd,Parametric Design,2026-01,0.9992,Positive
+1nwrdxo,Digital Twins,2025-10,0.9847,Positive
+1dj0g5l,AM_3Dprinting,2024-06,0.8308,Positive
+1ov3suq,Geographic Information Systems (GIS),2025-11,0.0,Neutral
+1mswh4q,Simulation,2025-08,0.4404,Positive
+1p8hq6g,BIM,2025-11,0.8782,Positive
+1qk92ay,BIM,2026-01,0.9684,Positive
+1q2daiu,BIM,2026-01,0.6641,Positive
+1ou4h5j,BIM,2025-11,0.9549,Positive
+1omml7l,BIM,2025-11,0.8043,Positive
+1oyymg2,BIM,2025-11,0.9325,Positive
+1mzom2s,BIM,2025-08,0.0,Neutral
+1gp2ywi,BIM,2024-11,0.9078,Positive
+1fjmo2m,BIM,2024-09,0.5267,Positive
+1fogo5c,BIM,2024-09,0.787,Positive
+1qwakbj,BIM,2026-02,-0.2204,Negative
+1qvcj2d,BIM,2026-02,0.8063,Positive
+1qwako1,BIM,2026-02,-0.2204,Negative
+1p8tas6,BIM,2025-11,0.6072,Positive
+1paekuw,BIM,2025-11,0.9846,Positive
+1kzxz1e,BIM,2025-05,0.9805,Positive
+1l5x98u,BIM,2025-06,0.885,Positive
+1jl8d8h,BIM,2025-03,0.8259,Positive
+1b8yh43,AM_3Dprinting,2024-03,0.0,Neutral
+1nxqtln,AM_3Dprinting,2025-10,0.9717,Positive
+1lwm8iy,Geographic Information Systems (GIS),2025-07,0.8417,Positive
+1lshvx7,Geographic Information Systems (GIS),2025-07,0.3899,Positive
+1ef45wi,Simulation,2024-07,0.9962,Positive

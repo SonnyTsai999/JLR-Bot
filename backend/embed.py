@@ -26,10 +26,14 @@ except ImportError:
     HAS_OPENAI = False
 
 
-def get_openai_client(api_key: str | None = None, base_url: str | None = None) -> "OpenAI":
+def get_openai_client(
+    api_key: str | None = None,
+    base_url: str | None = None,
+    timeout: float = 300.0,
+) -> "OpenAI":
     if not HAS_OPENAI:
         raise RuntimeError("openai is required. Install with: pip install openai")
-    kwargs: dict = {"api_key": api_key}
+    kwargs: dict = {"api_key": api_key, "timeout": timeout}
     if base_url:
         kwargs["base_url"] = base_url
     return OpenAI(**kwargs)
@@ -52,14 +56,15 @@ def load_chunks(project_root: Path, config: dict[str, Any]) -> list[dict[str, An
 
 def embed_texts(
     texts: list[str],
-    model: str = "text-embedding-3-large",
+    model: str = "text-embedding-3-small",
     client: "OpenAI | None" = None,
     api_key: str | None = None,
     batch_size: int = 100,
+    timeout: float = 300.0,
 ) -> list[list[float]]:
-    """Get OpenAI embeddings for a list of texts."""
+    """Get OpenAI embeddings for a list of texts. Uses timeout to avoid hanging."""
     if not client:
-        client = get_openai_client(api_key=api_key)
+        client = get_openai_client(api_key=api_key, timeout=timeout)
     all_embeddings: list[list[float]] = []
     for i in range(0, len(texts), batch_size):
         batch = texts[i : i + batch_size]
@@ -82,14 +87,15 @@ def build_index(
         raise RuntimeError("faiss-cpu and numpy are required. Install with: pip install faiss-cpu numpy")
     config = config or load_config()
     emb_cfg = config.get("embedding", {})
-    model = emb_cfg.get("model", "text-embedding-3-large")
-    batch_size = max(1, int(emb_cfg.get("batch_size", 100)))
+    model = emb_cfg.get("model", "text-embedding-3-small")
+    batch_size = max(1, int(emb_cfg.get("batch_size", 1)))
 
     texts = [c["text"] for c in chunks]
     llm_cfg = config.get("llm", {})
     base_url = llm_cfg.get("base_url") or None
-    client = get_openai_client(api_key=api_key, base_url=base_url)
-    vectors = embed_texts(texts, model=model, client=client, api_key=api_key, batch_size=batch_size)
+    timeout = float(emb_cfg.get("timeout_seconds", 300))
+    client = get_openai_client(api_key=api_key, base_url=base_url, timeout=timeout)
+    vectors = embed_texts(texts, model=model, client=client, api_key=api_key, batch_size=batch_size, timeout=timeout)
 
     matrix = np.array(vectors, dtype="float32")
     index = faiss.IndexFlatIP(matrix.shape[1])
@@ -124,6 +130,82 @@ def load_existing_index(index_dir: Path) -> tuple[Any, list[dict[str, Any]]] | N
     return index, metadata
 
 
+def check_index_health(
+    project_root: Path | None = None,
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Verify FAISS index and metadata are consistent and resumable.
+    Returns dict with: ok (bool), message (str), index_vectors, metadata_rows, chunks_total, pending.
+    """
+    config = config or load_config()
+    project_root = project_root or get_project_root()
+    index_dir = get_index_dir(project_root, config)
+    idx_path = index_dir / "faiss.index"
+    meta_path = index_dir / "metadata.jsonl"
+
+    out: dict[str, Any] = {
+        "ok": False,
+        "message": "",
+        "index_vectors": 0,
+        "metadata_rows": 0,
+        "chunks_total": 0,
+        "pending": 0,
+    }
+
+    if not idx_path.exists():
+        out["message"] = f"Index file missing: {idx_path}"
+        return out
+    if not meta_path.exists():
+        out["message"] = f"Metadata file missing: {meta_path}"
+        return out
+
+    all_chunks = load_chunks(project_root, config)
+    out["chunks_total"] = len(all_chunks)
+
+    if not HAS_FAISS:
+        out["message"] = "faiss-cpu not installed; cannot verify vector count."
+        return out
+
+    try:
+        index = faiss.read_index(str(idx_path))
+        out["index_vectors"] = index.ntotal
+    except Exception as e:
+        out["message"] = f"FAISS index unreadable: {e}"
+        return out
+
+    metadata = []
+    try:
+        with open(meta_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    metadata.append(json.loads(line))
+    except Exception as e:
+        out["message"] = f"Metadata file unreadable: {e}"
+        return out
+
+    out["metadata_rows"] = len(metadata)
+
+    if out["index_vectors"] != out["metadata_rows"]:
+        out["message"] = (
+            f"Index inconsistent: faiss.index has {out['index_vectors']} vectors but metadata.jsonl has {out['metadata_rows']} rows. "
+            "Re-build the index or fix files manually."
+        )
+        return out
+
+    embedded_ids = {m.get("chunk_id") for m in metadata if m.get("chunk_id")}
+    pending = [c for c in all_chunks if c.get("chunk_id") not in embedded_ids]
+    out["pending"] = len(pending)
+
+    out["ok"] = True
+    out["message"] = (
+        f"Index healthy: {out['index_vectors']} vectors, {out['metadata_rows']} metadata rows, "
+        f"{out['chunks_total']} total chunks in source, {out['pending']} pending."
+    )
+    return out
+
+
 def save_index(index: Any, metadata: list[dict[str, Any]], project_root: Path, config: dict[str, Any]) -> None:
     index_dir = get_index_dir(project_root, config)
     faiss.write_index(index, str(index_dir / "faiss.index"))
@@ -147,26 +229,46 @@ def load_index(project_root: Path, config: dict[str, Any]) -> tuple[Any, list[di
     return index, metadata
 
 
-def run_embed(config: dict[str, Any] | None = None, api_key: str | None = None) -> None:
+def run_embed(
+    config: dict[str, Any] | None = None,
+    api_key: str | None = None,
+    skip_health_check: bool = False,
+) -> None:
     """
-    Build or resume FAISS index. Saves after every batch — safe to stop (Ctrl+C); re-run to resume.
+    Build or resume FAISS index. Saves after every chunk — safe to stop (Ctrl+C); re-run to resume.
     If embedding.max_chunks_per_run is set in config, only that many new chunks are embedded per run.
     """
     config = config or load_config()
+    project_root = get_project_root()
+
+    existing_index_dir = get_index_dir(project_root, config)
+    idx_path = existing_index_dir / "faiss.index"
+    meta_path = existing_index_dir / "metadata.jsonl"
+
+    if idx_path.exists() or meta_path.exists():
+        health = check_index_health(project_root, config)
+        if not health["ok"]:
+            print("Index health check failed:", health["message"])
+            print("Fix the index before proceeding (e.g. remove index/faiss.index and index/metadata.jsonl to start fresh).")
+            raise SystemExit("Check the health of the index; cannot proceed now.")
+        if not skip_health_check:
+            print("Index health:", health["message"])
+
     key = api_key or get_api_key()
     if not key or not key.strip():
         raise SystemExit(
             "API key not set. Set OPENAI_API_KEY in the environment or llm.api_key in config/settings.yaml."
         )
-    project_root = get_project_root()
     all_chunks = load_chunks(project_root, config)
     if not all_chunks:
         raise SystemExit("No chunks found. Run ingest first (backend/ingest.py).")
 
     emb_cfg = config.get("embedding", {})
-    batch_size = max(1, int(emb_cfg.get("batch_size", 50)))
     max_per_run = int(emb_cfg.get("max_chunks_per_run", 0))
-    model = emb_cfg.get("model", "text-embedding-3-large")
+    max_chunk_chars = int(emb_cfg.get("max_chunk_chars", 20000))
+    skip_abnormal_sources = bool(emb_cfg.get("skip_abnormal_sources", True))
+    skip_abnormal_chunks = bool(emb_cfg.get("skip_abnormal_chunks", True))
+    model = emb_cfg.get("model", "text-embedding-3-small")
     index_dir = get_index_dir(project_root, config)
 
     existing = load_existing_index(index_dir)
@@ -185,43 +287,128 @@ def run_embed(config: dict[str, Any] | None = None, api_key: str | None = None) 
         print("All chunks already embedded. Nothing to do.")
         return
 
+    skipped_abnormal: list[dict[str, Any]] = []
+    if skip_abnormal_sources:
+        abnormal_sources = {
+            c.get("source")
+            for c in pending
+            if c.get("source") and len(c.get("text", "")) > max_chunk_chars
+        }
+        if abnormal_sources:
+            kept: list[dict[str, Any]] = []
+            for c in pending:
+                if c.get("source") in abnormal_sources:
+                    skipped_abnormal.append(c)
+                else:
+                    kept.append(c)
+            pending = kept
+            print(
+                f"Skipping {len(skipped_abnormal)} chunks from {len(abnormal_sources)} abnormal source PDFs "
+                f"(chunk length > {max_chunk_chars} chars)."
+            )
+            sample = list(sorted(abnormal_sources))[:5]
+            for s in sample:
+                print(f"  - skipped source: {s}")
+            if len(abnormal_sources) > len(sample):
+                print(f"  ... and {len(abnormal_sources) - len(sample)} more source(s).")
+    elif skip_abnormal_chunks:
+        kept: list[dict[str, Any]] = []
+        for c in pending:
+            if len(c.get("text", "")) > max_chunk_chars:
+                skipped_abnormal.append(c)
+            else:
+                kept.append(c)
+        if skipped_abnormal:
+            pending = kept
+            print(
+                f"Skipping {len(skipped_abnormal)} abnormal chunks "
+                f"(each > {max_chunk_chars} chars)."
+            )
+
+    if not pending:
+        print("No embeddable chunks remain after abnormal-PDF filtering.")
+        return
+
     if max_per_run > 0:
         pending = pending[:max_per_run]
         print(f"Limiting to {max_per_run} chunks this run ({len(pending)} to process).")
 
     total_chunks = len(all_chunks)
-    num_batches = (len(pending) + batch_size - 1) // batch_size
     pct0 = 100 * len(metadata) / total_chunks if total_chunks else 0
-    print(f"Progress: {len(metadata)}/{total_chunks} ({pct0:.1f}%) — batches of {batch_size}.")
+    print(f"Progress: {len(metadata)}/{total_chunks} ({pct0:.1f}%) — processing one chunk at a time.")
     print()
 
     llm_cfg = config.get("llm", {})
     base_url = llm_cfg.get("base_url") or None
-    client = get_openai_client(api_key=key, base_url=base_url)
+    timeout = float(emb_cfg.get("timeout_seconds", 300))
+    client = get_openai_client(api_key=key, base_url=base_url, timeout=timeout)
 
-    processed = 0
-    for batch_num, i in enumerate(range(0, len(pending), batch_size), 1):
-        batch_chunks = pending[i : i + batch_size]
-        texts = [c["text"] for c in batch_chunks]
-        vectors = embed_texts(texts, model=model, client=client, api_key=key, batch_size=batch_size)
+    total_this_run = len(pending)
+    failures: list[tuple[str, str, str]] = []
+    for processed, chunk in enumerate(pending, 1):
+        chunk_id = chunk.get("chunk_id") or f"chunk_{processed}"
+        print(f"  Chunk {processed}/{total_this_run} this run: calling API for {chunk_id}...", flush=True)
+        try:
+            vectors = embed_texts(
+                [chunk["text"]], model=model, client=client, api_key=key, batch_size=1, timeout=timeout
+            )
+        except Exception as e:
+            source = chunk.get("source") or ""
+            failures.append((chunk_id, source, str(e)))
+            print(f"  Failed on {chunk_id}: {e} (skipping and continuing)", flush=True)
+            continue
+
         matrix = np.array(vectors, dtype="float32")
         faiss.normalize_L2(matrix)
 
         if index is None:
             index = faiss.IndexFlatIP(matrix.shape[1])
         index.add(matrix)
-        metadata.extend(batch_chunks)
+        metadata.append(chunk)
         save_index(index, metadata, project_root, config)
-        processed += len(batch_chunks)
-        pct = 100 * len(metadata) / total_chunks
-        print(f"  Batch {batch_num}/{num_batches}: {processed}/{len(pending)} this run — {len(metadata)}/{total_chunks} total ({pct:.1f}%) — saved.")
+
+        n = len(metadata)
+        pct = 100 * n / total_chunks
+        print(f"  Chunk {n}/{total_chunks} ({pct:.1f}%) — saved.", flush=True)
 
     print()
-    if max_per_run > 0 and len(pending) >= max_per_run:
+    if max_per_run > 0 and total_this_run >= max_per_run:
         print(f"Done. Index has {len(metadata)} chunks. Re-run to continue embedding more.")
     else:
         print(f"Done. Index has {len(metadata)} chunks.")
+    if failures:
+        print(f"Skipped {len(failures)} failed chunk(s) this run.")
+        for cid, src, err in failures[:8]:
+            label = f"{cid}" if not src else f"{cid} [{src}]"
+            print(f"  - {label}: {err}")
+        if len(failures) > 8:
+            print(f"  ... and {len(failures) - 8} more failure(s).")
+
+
+def main() -> None:
+    import argparse
+    parser = argparse.ArgumentParser(description="Build or resume FAISS index from processed chunks.")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Only run index health check and exit (exit 0 if healthy, 1 otherwise).",
+    )
+    parser.add_argument(
+        "--skip-health-check",
+        action="store_true",
+        help="Skip printing health check when resuming (embedding only).",
+    )
+    args = parser.parse_args()
+
+    if args.check:
+        config = load_config()
+        project_root = get_project_root()
+        health = check_index_health(project_root, config)
+        print(health["message"])
+        raise SystemExit(0 if health["ok"] else 1)
+
+    run_embed(api_key=get_api_key(), skip_health_check=args.skip_health_check)
 
 
 if __name__ == "__main__":
-    run_embed(api_key=get_api_key())
+    main()

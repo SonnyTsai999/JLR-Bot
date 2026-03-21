@@ -1,0 +1,18 @@
+# JLR Technology Intelligence Assistant
+# Core dependencies for the RAG pipeline and API.
+
+# PDF ingestion
+pypdf>=4.0.0
+
+# Config
+PyYAML>=6.0
+
+# Embeddings & vector store
+openai>=1.0.0
+faiss-cpu>=1.7.4
+numpy>=1.24.0
+
+# API server
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.0.0

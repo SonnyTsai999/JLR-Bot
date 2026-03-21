@@ -5,6 +5,17 @@
     "api/query.js": {
       "maxDuration": 60,
       "includeFiles": "index/node_index.json"
+    },
+    "api/deep-research.js": {
+      "maxDuration": 300,
+      "includeFiles": "index/node_index.json"
+    },
+    "api/sentiment.js": {
+      "includeFiles": "sentiment/*.csv"
+    },
+    "api/reddit-insights.js": {
+      "maxDuration": 60,
+      "includeFiles": "index/reddit_index.json"
     }
   },
   "headers": [

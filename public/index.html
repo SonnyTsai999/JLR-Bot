@@ -476,10 +476,44 @@
       0%, 100% { opacity: 0.5; }
       50% { opacity: 1; }
     }
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .nav-tab {
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      box-shadow: var(--shadow);
+    }
+    .nav-tab:hover {
+      transform: translateY(-1px);
+      color: var(--text);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+    .nav-tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="nav-tabs">
+      <a href="/" class="nav-tab active">Intelligence Assistant</a>
+      <a href="/sentiment.html" class="nav-tab" target="_blank">Reddit AI Insights</a>
+    </div>
     <div class="hero">
       <div class="hero-tag">AI Strategy Assistant</div>
       <h1>JLR Technology Intelligence Assistant</h1>

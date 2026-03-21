@@ -72,7 +72,7 @@ See [SYSTEM_INTENT.md](SYSTEM_INTENT.md) for full development intent and constra
 ## API
 
 - `GET /health` — service health.
-- `POST /query` — body: `{ "query": "...", "technology_L1": null, "technology_L2": null, "lifecycle_stage": null, "top_k": null }`. Returns `{ "query", "response", "sources_used" }`.
+- `POST /query` — body: `{ "query": "...", "technology_L1": null, "technology_L2": null, "lifecycle_stage": null, "top_k": null }`. Returns `{ "query", "response", "sources_used" }`. The pipeline is **adaptive RAG**: query → intent classification → retrieve → evidence confidence filter → synthesis with **dynamic content blocks** (summary, key_findings, barriers, roadmap, comparison, implications, evidence, sources). Config: `adaptive_rag.use_intent_classification`, `adaptive_rag.min_confidence`.
 
 ## Constraints (summary)
 

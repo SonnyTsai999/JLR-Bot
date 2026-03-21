@@ -50,7 +50,7 @@ def load_index_and_metadata(project_root: Path, config: dict[str, Any]) -> tuple
 
 def embed_query(
     query: str,
-    model: str = "text-embedding-3-large",
+    model: str = "text-embedding-3-small",
     client: "OpenAI | None" = None,
     api_key: str | None = None,
 ) -> list[float]:
@@ -111,7 +111,7 @@ def retrieve(
 
     base_url = config.get("llm", {}).get("base_url") or None
     client = get_openai_client(api_key=api_key, base_url=base_url)
-    model = emb_cfg.get("model", "text-embedding-3-large")
+    model = emb_cfg.get("model", "text-embedding-3-small")
     qvec = embed_query(query, model=model, client=client, api_key=api_key)
     q = np.array([qvec], dtype="float32")
     faiss.normalize_L2(q)
