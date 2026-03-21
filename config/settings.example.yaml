@@ -48,6 +48,13 @@ deep_research:
   extraction_max_tokens: 4096       # max tokens for evidence extraction JSON (default 4096)
   max_evidence_chars: 20000         # max evidence text sent to report agent (default 20000)
 
+# Reddit insights (/api/reddit-insights): index/reddit_index.json is gitignored (large).
+# Build: npm run embed:reddit  →  then either keep file local or upload JSON and set:
+# reddit_index_url: "https://your-cdn/.../reddit_index.json"
+# Env override: REDDIT_INDEX_URL
+# Private Vercel Blob: also set BLOB_READ_WRITE_TOKEN (from Vercel → Storage) for server-side fetch.
+reddit_index_url: null
+
 # System identity for prompts
 system_identity: "Technology Strategy Analyst for JLR specializing in emerging AEC design technologies."
 

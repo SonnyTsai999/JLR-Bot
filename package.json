@@ -10,7 +10,8 @@
     "dev": "node server.js",
     "build": "echo 'No build step'",
     "start": "node server.js",
-    "export-index": "python scripts/export_index_for_node.py"
+    "export-index": "python scripts/export_index_for_node.py",
+    "embed:reddit": "node scripts/embed_reddit.js"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",

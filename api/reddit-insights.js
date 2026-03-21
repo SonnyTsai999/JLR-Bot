@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import OpenAI from 'openai';
 import { getConfig, getApiKey } from '../lib/config.js';
+import { vercelBlobFetchHeaders } from '../lib/vercel-blob-fetch.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,18 +23,53 @@ function cosineSimilarity(a, b) {
 }
 
 let cachedRedditIndex = null;
+/** @type {string | null} */
+let cachedRedditIndexSource = null;
 
-async function loadRedditIndex() {
-  if (cachedRedditIndex) return cachedRedditIndex;
-  
+/**
+ * Load chunks from REDDIT_INDEX_URL / config.reddit_index_url, else index/reddit_index.json.
+ * The JSON is ~100MB+ and is gitignored — not on GitHub; use URL for serverless.
+ */
+async function loadRedditIndex(config) {
+  const url = process.env.REDDIT_INDEX_URL || config?.reddit_index_url;
   const indexPath = path.join(__dirname, '..', 'index', 'reddit_index.json');
-  if (!fs.existsSync(indexPath)) {
-    throw new Error("Reddit index not found. Did you run the embedding script?");
+
+  if (url) {
+    const key = `url:${url}`;
+    if (cachedRedditIndex && cachedRedditIndexSource === key) return cachedRedditIndex;
+    const res = await fetch(url, {
+      headers: { Accept: 'application/json', ...vercelBlobFetchHeaders(url) },
+    });
+    if (!res.ok) {
+      const hint =
+        res.status === 401 || res.status === 403
+          ? ' For private Vercel Blob, add BLOB_READ_WRITE_TOKEN to env (Vercel → Storage), or re-upload as public read.'
+          : '';
+      throw new Error(
+        `Reddit index fetch failed (${res.status} ${res.statusText}). Check REDDIT_INDEX_URL.${hint}`
+      );
+    }
+    const data = await res.json();
+    cachedRedditIndex = Array.isArray(data.chunks) ? data.chunks : data;
+    cachedRedditIndexSource = key;
+    return cachedRedditIndex;
   }
-  
+
+  const key = `file:${indexPath}`;
+  if (cachedRedditIndex && cachedRedditIndexSource === key) return cachedRedditIndex;
+
+  if (!fs.existsSync(indexPath)) {
+    throw new Error(
+      'Reddit index not found. Locally: run `npm run embed:reddit` (needs sentiment/*.csv + OPENAI_API_KEY). ' +
+        'Production: upload index/reddit_index.json to blob/HTTPS storage and set env REDDIT_INDEX_URL ' +
+        '(file is gitignored and >100MB — GitHub rejects it without Git LFS).'
+    );
+  }
+
   const content = fs.readFileSync(indexPath, 'utf8');
   const data = JSON.parse(content);
   cachedRedditIndex = Array.isArray(data.chunks) ? data.chunks : data;
+  cachedRedditIndexSource = key;
   return cachedRedditIndex;
 }
 
@@ -71,7 +107,7 @@ export default async function handler(req, res) {
 
     // 1. Load index
     console.log("Loading reddit index...");
-    const chunks = await loadRedditIndex();
+    const chunks = await loadRedditIndex(config);
 
     // 2. Filter by tech_tag
     const filteredChunks = chunks.filter(c => c.tech_tag === tech_tag);

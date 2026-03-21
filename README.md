@@ -17,6 +17,7 @@ See [SYSTEM_INTENT.md](SYSTEM_INTENT.md) for full development intent and constra
 - **Never commit** `config/settings.yaml` (it can contain your API key and base URL). Use `config/settings.example.yaml` as a template.
 - **No secrets in code** — the app reads `OPENAI_API_KEY` (and optional `OPENAI_BASE_URL`) from the environment; set these in Vercel or locally.
 - **Index content** — `index/node_index.json` contains embeddings and chunk text derived from your corpus; if the repo is public, this content is visible. Use a private repo or host the index elsewhere (e.g. `INDEX_URL`) if the corpus is confidential.
+- **Reddit index** — `index/reddit_index.json` is **not** in git (`.gitignore`). It is typically **~100MB+** (GitHub rejects files over 100MB). Build with `npm run embed:reddit` locally, then either run Node locally with that file or set **`REDDIT_INDEX_URL`** (public HTTPS URL to the JSON) on Vercel.
 
 ## Setup
 
@@ -95,6 +96,20 @@ python scripts/export_index_for_node.py
 
 This writes `index/node_index.json` (embeddings + metadata). If the file is large (> ~50MB), host it elsewhere (e.g. Vercel Blob) and set `INDEX_URL` in Vercel.
 
+### Reddit insights index (`/api/reddit-insights`, `public/sentiment.html`)
+
+1. Ensure `sentiment/reddit_posts.csv` and `sentiment/reddit_comments.csv` exist.
+2. Set `OPENAI_API_KEY`, then run:
+
+   ```bash
+   npm run embed:reddit
+   ```
+
+   This writes **`index/reddit_index.json`** (large; gitignored).
+
+3. **Local:** `npm run dev` — the API reads the file from disk automatically.
+4. **Vercel:** upload `reddit_index.json` to blob/S3/Git LFS raw URL (or any public HTTPS URL) and set **`REDDIT_INDEX_URL`** to that URL in Vercel environment variables. Do not rely on committing the file to GitHub.
+
 ### Local Node dev
 
 ```bash
@@ -110,7 +125,7 @@ Open http://localhost:3000. The app serves `public/index.html` and exposes `POST
 1. Push the repo and import the project in [Vercel](https://vercel.com).
 2. Set **Environment Variables** (Settings → Environment Variables):
    - `OPENAI_API_KEY` (required)
-   - Optional: `OPENAI_BASE_URL`, `EMBEDDING_MODEL`, `CHAT_MODEL` (or `LLM_MODEL`), `LLM_TEMPERATURE`, `LLM_MAX_TOKENS`, `RETRIEVAL_TOP_K`, `INDEX_PATH`, `INDEX_URL`
+   - Optional: `OPENAI_BASE_URL`, `EMBEDDING_MODEL`, `CHAT_MODEL` (or `LLM_MODEL`), `LLM_TEMPERATURE`, `LLM_MAX_TOKENS`, `RETRIEVAL_TOP_K`, `INDEX_PATH`, `INDEX_URL`, **`REDDIT_INDEX_URL`** (required for Reddit insights if the JSON is not bundled)
 3. If the index is in the repo: ensure `index/node_index.json` is committed (or under 50MB). If it’s too large, upload to Vercel Blob (or another URL) and set `INDEX_URL` to that URL.
 4. Deploy. The frontend is served from `public/`; API routes live under `/api/query` and `/api/health`.
 
@@ -135,6 +150,8 @@ All config is via environment variables (no YAML in Node):
 | `RETRIEVAL_TOP_K` | `10` | Number of chunks to retrieve. |
 | `INDEX_PATH` | — | Path to `node_index.json` (relative to project root). |
 | `INDEX_URL` | — | URL to fetch index JSON (overrides local file; use for large indexes). |
+| `REDDIT_INDEX_URL` | — | URL to fetch `reddit_index.json` for `/api/reddit-insights` (file is gitignored / too large for GitHub). |
+| `BLOB_READ_WRITE_TOKEN` | — | For **private** `*.blob.vercel-storage.com` URLs used as `REDDIT_INDEX_URL` or **`INDEX_URL`**, set your Vercel Blob token (Project → Storage). Public blobs do not need it. |
 
 ## Future integration
 
