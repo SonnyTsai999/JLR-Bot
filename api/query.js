@@ -1,10 +1,9 @@
 /**
- * POST /api/query — Adaptive RAG: retrieve → intent → confidence → synthesize with dynamic blocks.
- * Body: { query: string, top_k?, technology_L1?, technology_L2?, lifecycle_stage? }
+ * POST /api/query — Standard RAG: retrieve → direct-answer synthesis.
+ * Body: { query: string, top_k?, technology_L1?, technology_L2?, lifecycle_stage?, model? }
  */
 import { retrieve } from '../lib/retrieve.js';
 import { synthesize } from '../lib/synthesize.js';
-import { classifyIntent, selectBlocksWithConfidence } from '../lib/adaptive-rag.js';
 import { getConfig, getApiKey } from '../lib/config.js';
 
 export default async function handler(req, res) {
@@ -33,14 +32,11 @@ export default async function handler(req, res) {
 
   const apiKey = getApiKey();
   if (!apiKey) {
-    return res.status(500).json({ detail: 'API key not set. Set OPENAI_API_KEY in environment (e.g. Vercel env vars).' });
+    return res.status(500).json({ detail: 'API key not set. Set OPENAI_API_KEY in environment.' });
   }
 
   try {
     const config = getConfig();
-    const adaptiveCfg = config.adaptive_rag || {};
-    const minConfidence = adaptiveCfg.min_confidence ?? 0.25;
-    const useIntent = adaptiveCfg.use_intent_classification !== false;
 
     const chunks = await retrieve(query, {
       config,
@@ -53,15 +49,9 @@ export default async function handler(req, res) {
 
     const model = typeof body.model === 'string' && body.model ? body.model : undefined;
 
-    const intentBlocks = useIntent
-      ? await classifyIntent(query, { config, api_key: apiKey, model })
-      : ['summary', 'key_findings', 'implications', 'sources'];
-    const blocks = selectBlocksWithConfidence(intentBlocks, chunks, { min_confidence: minConfidence });
-
     const answer = await synthesize(query, chunks, {
       config,
       api_key: apiKey,
-      blocks,
       model,
     });
 
@@ -82,11 +72,7 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json({
-      query,
-      response: answer,
-      sources_used,
-    });
+    return res.status(200).json({ query, response: answer, sources_used });
   } catch (err) {
     const message = err.message || String(err);
     return res.status(500).json({ detail: message });
