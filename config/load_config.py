@@ -47,6 +47,9 @@ def _default_config() -> dict[str, Any]:
             "batch_size": 1,
             "max_chunks_per_run": 500,
             "timeout_seconds": 300,
+            "max_chunk_chars": 20000,
+            "skip_abnormal_sources": False,
+            "on_oversized_chunk": "truncate",
         },
         "retrieval": {
             "top_k": 10,

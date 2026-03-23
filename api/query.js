@@ -5,6 +5,7 @@
 import { retrieve } from '../lib/retrieve.js';
 import { synthesize } from '../lib/synthesize.js';
 import { getConfig, getApiKey } from '../lib/config.js';
+import { resolveModel } from '../lib/chat-models.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -47,12 +48,14 @@ export default async function handler(req, res) {
       lifecycle_stage: body.lifecycle_stage ?? null,
     });
 
-    const model = typeof body.model === 'string' && body.model ? body.model : undefined;
+    const llm = config.llm || {};
+    const bodyModel = typeof body.model === 'string' && body.model.trim() ? body.model.trim() : undefined;
+    const chatModel = resolveModel(bodyModel, llm.model);
 
     const answer = await synthesize(query, chunks, {
       config,
       api_key: apiKey,
-      model,
+      model: chatModel,
     });
 
     const seen = new Set();
@@ -72,6 +75,7 @@ export default async function handler(req, res) {
       });
     }
 
+    res.setHeader('X-Resolved-Chat-Model', chatModel);
     return res.status(200).json({ query, response: answer, sources_used });
   } catch (err) {
     const message = err.message || String(err);

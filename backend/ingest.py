@@ -189,11 +189,31 @@ def _load_existing_chunks(out_dir: Path) -> tuple[list[dict[str, Any]], set[str]
     return chunks, ingested_sources
 
 
+def _pdf_paths_in_dir(raw_dir: Path) -> list[Path]:
+    """All .pdf files (case-insensitive on Windows)."""
+    seen: set[str] = set()
+    out: list[Path] = []
+    for p in sorted(raw_dir.iterdir()) if raw_dir.is_dir() else []:
+        if not p.is_file():
+            continue
+        if p.suffix.lower() != ".pdf":
+            continue
+        key = p.name.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(p)
+    return out
+
+
 def run_ingest(config: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     """
-    Run ingestion on all PDFs in data/raw_pdfs.
+    Run ingestion on all PDFs under paths.raw_pdfs (see config/settings.yaml).
     Saves processed chunks to data/processed_chunks as JSONL (one JSON object per line).
     Resumable: loads existing chunks and skips PDFs already ingested (by filename).
+
+    Important: copying PDFs into the folder is not enough — you must run this script
+    before `python -m backend.embed`. Embed only reads chunks.jsonl, not raw_pdfs.
     """
     config = config or load_config()
     project_root = get_project_root()
@@ -202,12 +222,31 @@ def run_ingest(config: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     raw_dir = project_root / paths.get("raw_pdfs", "data/raw_pdfs")
     out_dir = project_root / paths.get("processed_chunks", "data/processed_chunks")
 
+    print(f"Configured PDF folder: {raw_dir.resolve()}")
+    alt_root_raw = project_root / "raw_pdfs"
+    if alt_root_raw.is_dir() and alt_root_raw.resolve() != raw_dir.resolve():
+        alt_pdfs = _pdf_paths_in_dir(alt_root_raw)
+        if alt_pdfs:
+            print(
+                f"NOTE: Found {len(alt_pdfs)} PDF(s) in {alt_root_raw.resolve()} — "
+                f"that path is NOT used. Either move them to the folder above, or set "
+                f"paths.raw_pdfs: \"raw_pdfs\" in config/settings.yaml."
+            )
+
     # Resume: keep existing chunks and skip already-ingested sources
     all_chunks, ingested_sources = _load_existing_chunks(out_dir)
     if ingested_sources:
         print(f"Resuming: {len(all_chunks)} existing chunks from {len(ingested_sources)} ingested PDF(s).")
 
-    for pdf_path in sorted(raw_dir.glob("*.pdf")):
+    pdf_paths = _pdf_paths_in_dir(raw_dir)
+    print(f"Found {len(pdf_paths)} PDF file(s) in configured folder.")
+    to_ingest = [p for p in pdf_paths if p.name not in ingested_sources]
+    if to_ingest:
+        print(f"Will ingest {len(to_ingest)} new PDF(s); skipping {len(pdf_paths) - len(to_ingest)} already in chunks.jsonl.")
+    elif pdf_paths:
+        print("No new PDF filenames — all are already in chunks.jsonl. To replace a PDF, remove its lines from chunks.jsonl or rename the file.")
+
+    for pdf_path in pdf_paths:
         if pdf_path.name in ingested_sources:
             print(f"Skipping (already ingested): {pdf_path.name}")
             continue

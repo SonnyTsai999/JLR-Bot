@@ -3,6 +3,7 @@
 
 # Paths (relative to project root)
 paths:
+  # PDFs to ingest — default is data/raw_pdfs (not project-root "raw_pdfs" unless you set it here)
   raw_pdfs: "data/raw_pdfs"
   processed_chunks: "data/processed_chunks"
   index_dir: "index"
@@ -22,6 +23,11 @@ embedding:
   batch_size: 1
   max_chunks_per_run: 500
   timeout_seconds: 300
+  max_chunk_chars: 20000
+  # false = do not blacklist a whole PDF when one chunk is too long (recommended).
+  skip_abnormal_sources: false
+  # truncate = embed first max_chunk_chars; skip = drop only oversized chunks.
+  on_oversized_chunk: truncate
 
 # Retrieval (max_chunks_per_source: 2 encourages multiple papers in each answer)
 retrieval:

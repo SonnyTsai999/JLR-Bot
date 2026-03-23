@@ -52,6 +52,8 @@ See [SYSTEM_INTENT.md](SYSTEM_INTENT.md) for full development intent and constra
    ```
    Output: `data/processed_chunks/chunks.jsonl`.
 
+   Put PDFs in the folder set by **`paths.raw_pdfs`** in `config/settings.yaml` (default **`data/raw_pdfs`**, not the project-root `raw_pdfs` folder unless you change config). After adding new files, **run ingest again** before embed — embed does not read PDFs, only `chunks.jsonl`.
+
 **2. Build FAISS index**
 
    ```bash
@@ -59,6 +61,8 @@ See [SYSTEM_INTENT.md](SYSTEM_INTENT.md) for full development intent and constra
    python -m backend.embed
    ```
    Output: `index/faiss.index` and `index/metadata.jsonl`.
+
+   **Oversized chunks:** If embed prints “Skipping … abnormal source PDFs”, those PDFs were not embedded. Set `embedding.skip_abnormal_sources: false` (default in new projects) and `embedding.on_oversized_chunk: truncate` so long chunks are truncated to `max_chunk_chars` instead of dropping whole files. Re-run `python -m backend.embed` to resume pending chunks.
 
 **3. Start API server**
 
@@ -144,7 +148,8 @@ All config is via environment variables (no YAML in Node):
 | `OPENAI_API_KEY` | — | Required. API key for embeddings and chat. |
 | `OPENAI_BASE_URL` | (OpenAI) | Base URL for OpenAI-compatible API. |
 | `EMBEDDING_MODEL` | `text-embedding-3-small` | Embedding model name. |
-| `CHAT_MODEL` / `LLM_MODEL` | `gpt-4o` | Chat model for synthesis. |
+| `CHAT_MODEL` / `LLM_MODEL` | `gpt-4o` | Chat model for synthesis. Use the same **wire IDs** as the UI: `gpt-4o`, `gpt-4o-mini`, `GPT-5`, `GPT5-mini`, `GPT5-nano` (5.x names are case-sensitive on many gateways). |
+| `LEGACY_CHAT_MAX_TOKENS` | — | If `1` / `true`, always send `max_tokens` (not `max_completion_tokens`) for GPT-5 family — use only if your gateway rejects `max_completion_tokens`. |
 | `LLM_TEMPERATURE` | `0.3` | Chat temperature. |
 | `LLM_MAX_TOKENS` | `2048` | Max tokens per response. |
 | `RETRIEVAL_TOP_K` | `10` | Number of chunks to retrieve. |
@@ -152,6 +157,13 @@ All config is via environment variables (no YAML in Node):
 | `INDEX_URL` | — | URL to fetch index JSON (overrides local file; use for large indexes). |
 | `REDDIT_INDEX_URL` | — | URL to fetch `reddit_index.json` for `/api/reddit-insights` (file is gitignored / too large for GitHub). |
 | `BLOB_READ_WRITE_TOKEN` | — | For **private** `*.blob.vercel-storage.com` URLs used as `REDDIT_INDEX_URL` or **`INDEX_URL`**, set your Vercel Blob token (Project → Storage). Public blobs do not need it. |
+
+### Narrow / direct questions (criteria, lists, VIKOR, …)
+
+Questions that look like definitions, criteria lists, or named MCDM methods (e.g. *what are the criteria of VIKOR…*) are detected in **`lib/query-modes.js`** (`isNarrowFactualQuery`). Effects:
+
+- **`POST /api/query`**: adds a **Direct answer** section first, trims **roadmap/barriers** unless the question asks for them, prepends focus rules to synthesis.
+- **`POST /api/deep-research`**: tighter planner/retrieval/report prompts; standard reports use **## Direct answer** first and skip generic barrier/maturity sections unless asked.
 
 ## Future integration
 

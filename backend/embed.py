@@ -266,8 +266,10 @@ def run_embed(
     emb_cfg = config.get("embedding", {})
     max_per_run = int(emb_cfg.get("max_chunks_per_run", 0))
     max_chunk_chars = int(emb_cfg.get("max_chunk_chars", 20000))
-    skip_abnormal_sources = bool(emb_cfg.get("skip_abnormal_sources", True))
-    skip_abnormal_chunks = bool(emb_cfg.get("skip_abnormal_chunks", True))
+    # If True: any PDF with at least one oversized chunk drops ALL its chunks (legacy; very aggressive).
+    skip_abnormal_sources = bool(emb_cfg.get("skip_abnormal_sources", False))
+    # When not skipping whole sources: "truncate" = embed first max_chunk_chars (default); "skip" = drop that chunk only.
+    on_oversized_chunk = str(emb_cfg.get("on_oversized_chunk", "truncate")).strip().lower()
     model = emb_cfg.get("model", "text-embedding-3-small")
     index_dir = get_index_dir(project_root, config)
 
@@ -288,6 +290,8 @@ def run_embed(
         return
 
     skipped_abnormal: list[dict[str, Any]] = []
+    truncated_count = 0
+
     if skip_abnormal_sources:
         abnormal_sources = {
             c.get("source")
@@ -295,7 +299,7 @@ def run_embed(
             if c.get("source") and len(c.get("text", "")) > max_chunk_chars
         }
         if abnormal_sources:
-            kept: list[dict[str, Any]] = []
+            kept = []
             for c in pending:
                 if c.get("source") in abnormal_sources:
                     skipped_abnormal.append(c)
@@ -304,25 +308,41 @@ def run_embed(
             pending = kept
             print(
                 f"Skipping {len(skipped_abnormal)} chunks from {len(abnormal_sources)} abnormal source PDFs "
-                f"(chunk length > {max_chunk_chars} chars)."
+                f"(chunk length > {max_chunk_chars} chars). "
+                f"Tip: set embedding.skip_abnormal_sources: false and use on_oversized_chunk: truncate instead."
             )
             sample = list(sorted(abnormal_sources))[:5]
             for s in sample:
                 print(f"  - skipped source: {s}")
             if len(abnormal_sources) > len(sample):
                 print(f"  ... and {len(abnormal_sources) - len(sample)} more source(s).")
-    elif skip_abnormal_chunks:
-        kept: list[dict[str, Any]] = []
+    else:
+        kept = []
         for c in pending:
-            if len(c.get("text", "")) > max_chunk_chars:
+            text = c.get("text") or ""
+            if len(text) <= max_chunk_chars:
+                kept.append(c)
+                continue
+            if on_oversized_chunk == "skip":
                 skipped_abnormal.append(c)
             else:
-                kept.append(c)
+                # Default and "truncate": cap length so embedding APIs stay within limits.
+                nc = dict(c)
+                nc["text"] = text[:max_chunk_chars]
+                nc["_embed_text_truncated"] = True
+                nc["_embed_text_orig_len"] = len(text)
+                kept.append(nc)
+                truncated_count += 1
+        pending = kept
         if skipped_abnormal:
-            pending = kept
             print(
-                f"Skipping {len(skipped_abnormal)} abnormal chunks "
-                f"(each > {max_chunk_chars} chars)."
+                f"Skipping {len(skipped_abnormal)} oversized chunks "
+                f"(each > {max_chunk_chars} chars; on_oversized_chunk=skip)."
+            )
+        if truncated_count:
+            print(
+                f"Truncated {truncated_count} chunk(s) to {max_chunk_chars} chars for embedding "
+                f"(metadata stores truncated text; re-chunk PDFs in ingest for full coverage)."
             )
 
     if not pending:

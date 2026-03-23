@@ -5,7 +5,8 @@
  * Else: JSON { query, response, sources_used }.
  */
 import { runDeepResearch } from '../lib/deep-research.js';
-import { getApiKey } from '../lib/config.js';
+import { getConfig, getApiKey } from '../lib/config.js';
+import { resolveModel } from '../lib/chat-models.js';
 
 function sendEvent(res, data) {
   res.write('data: ' + JSON.stringify(data) + '\n\n');
@@ -42,7 +43,10 @@ export default async function handler(req, res) {
 
   const stream = body.stream === true;
   const report_type = typeof body.report_type === 'string' ? body.report_type : 'auto';
-  const model = typeof body.model === 'string' && body.model ? body.model : undefined;
+  const config = getConfig();
+  const llm = config.llm || {};
+  const bodyModel = typeof body.model === 'string' && body.model.trim() ? body.model.trim() : undefined;
+  const model = resolveModel(bodyModel, llm.model);
 
   if (stream) {
     if (res.socket && res.socket.setNoDelay) res.socket.setNoDelay(true);
@@ -60,6 +64,7 @@ export default async function handler(req, res) {
       api_key: apiKey,
       report_type,
       model,
+      config,
       onStatus: (status) => sendEvent(res, { status }),
     })
       .then(({ response, sources_used }) => {
@@ -74,7 +79,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { response, sources_used } = await runDeepResearch(query, { api_key: apiKey, report_type, model });
+    const { response, sources_used } = await runDeepResearch(query, {
+      api_key: apiKey,
+      report_type,
+      model,
+      config,
+    });
+    res.setHeader('X-Resolved-Chat-Model', model);
     return res.status(200).json({
       query,
       response,

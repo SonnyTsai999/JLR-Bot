@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import OpenAI from 'openai';
 import { getConfig, getApiKey } from '../lib/config.js';
+import { resolveModel } from '../lib/chat-models.js';
 import { vercelBlobFetchHeaders } from '../lib/vercel-blob-fetch.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -97,7 +98,9 @@ export default async function handler(req, res) {
   try {
     const config = getConfig();
     const llmConfig = config.llm || {};
-    const model = model_selection || llmConfig.model || 'gpt-5-nano';
+    const pick =
+      typeof model_selection === 'string' && model_selection.trim() ? model_selection.trim() : undefined;
+    const model = resolveModel(pick, llmConfig.model);
     const embModel = config.embedding?.model || 'text-embedding-3-small';
     
     const client = new OpenAI({

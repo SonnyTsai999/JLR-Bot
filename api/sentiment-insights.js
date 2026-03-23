@@ -4,6 +4,7 @@
  */
 import OpenAI from 'openai';
 import { getConfig, getApiKey } from '../lib/config.js';
+import { resolveModel } from '../lib/chat-models.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,8 +28,7 @@ export default async function handler(req, res) {
     try {
       const config = getConfig();
       const llm = config.llm || {};
-      // Update default model for Sentiment Insights to match the main app's requested default
-      const model = llm.model || 'GPT5-nano'; 
+      const model = resolveModel(undefined, llm.model); 
       
       console.log(`Starting insights generation with model: ${model}, API key present: ${!!apiKey}`);
 
